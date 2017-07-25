@@ -16,3 +16,6 @@ You can refer to the Chrome extension [Get Started](https://developer.chrome.com
 
 Umock标记,插件
 临时功能
+
+![Preview1](https://github.com/youwi/chrome-extension-umock/raw/master/dist/preview-1.png)
+![Preview2](https://github.com/youwi/chrome-extension-umock/raw/master/dist/preview-2.png)
