@@ -26,7 +26,7 @@
     }
   ],
   "author": "youcxx@gmail.com",
-  "homepage_url": "https://github.com/eanplatter/chrome-extention-starter#readme",
+  "homepage_url": "https://github.com/youwi/chrome-extension-umock",
   "incognito": "spanning",
   "minimum_chrome_version": "46",
   "permissions": [
