@@ -4,6 +4,7 @@
   "version": "0.0.1",
   "version_name": "alpha",
   "description": "just for umock.com",
+  "devtools_page": "src/devtools.html",
   "icons": {
     "16": "images/icon16.png",
     "48": "images/icon48.png",
@@ -31,5 +32,13 @@
   "permissions": [
     "tabs"
   ],
+  "background": {
+    "scripts": [
+      "src/background.js"
+    ]
+  },
+
+
   "short_name": "starter"
 }
+

@@ -35,10 +35,10 @@ var waiter=setInterval(()=>{
     $(".project-title").append("<span class='h-tag _sp-export-content' ></span>");
 
     $("._sp-export-button").on("click",exportProgress)
-
     HAS_UPDATED=true
     clearInterval(waiter);
 },1000)
+
 
 var exportProgressState=false;
 var exportProgress=()=>{
@@ -73,6 +73,36 @@ var exportProgress=()=>{
     exportProgressState=true
 }
 
+setInterval(()=>{jsonExporter()},1000)
+var jsonExporter=()=>{
+    $(".param-ref") //对象
+
+    $(".param-object-container").one("dblclick",(event)=>{
+        var outjson={}
+        var outString="{\n<br/>"
+        $(event.currentTarget).find(".param-container").map((i,kki)=>{
+            var key=$(kki).find(".param-name").text()
+            var type=$(kki).find(".param-type").text()
+            var desc=$(kki).find(".param-description").text();
+            outString+="  &nbsp&nbsp"+key+""+typeTo(type)+",  //"+desc+"\n<br/>"
+        })
+        outString+="\n}"
+        console.log(outString)
+        $("._sp-bb").remove()
+        $(event.currentTarget).append("<code class='_sp-bb'>"+outString+"</code>")
+    }) //对象体
+}
+
+var typeTo=(str)=>{
+    if(str=="integer")
+        return 0
+    if(str=="date")
+        return "\"2017-01-01T12:00:00+08:00\""
+    if(str=="string")
+        return "\"\""
+    if(str=="number")
+        return 0.0
+}
 //0 ¼ ½ ¾ 1
 // 对应 1,2,3,4,
 var toggleTempMark=(pathName,dom)=>{
