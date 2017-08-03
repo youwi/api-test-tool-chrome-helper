@@ -49,7 +49,7 @@ function spUrl(req) {
  */
 function fillBodyOrParam(req){
     if(req.method=="POST"){
-        return "| set Body|"+req.postData.text+"|\\n"
+        return "| set Body| "+excp(req.postData.text)+" |\\n"
     }else if(req.method=="GET"){
         var out=""
         for(var item of req.queryString){
@@ -57,4 +57,10 @@ function fillBodyOrParam(req){
         }
         return out
     }
+}
+/**
+ * 转义引号为
+ */
+function excp(str){
+   return  str.replace(/"/g,'\\"')
 }
