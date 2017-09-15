@@ -20,7 +20,7 @@
   },
   "content_scripts": [
     {
-      "matches": ["<all_urls>"],
+      "matches": ["http://yoda:9001/server/*"],
       "js": ["src/jquery-3.2.1.min.js","src/content.js","jquery-ui-1.12.1/jquery-ui.js"],
       "run_at":"document_end"
     }
