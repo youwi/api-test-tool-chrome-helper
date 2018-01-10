@@ -35,6 +35,8 @@ var waiter=setInterval(()=>{
         clearInterval(waiter);
         return
     }
+    //同步服务器数据
+    syncRemote();
     console.log("umock plugin running")
 
     var paths=$(".path-li");
@@ -94,7 +96,7 @@ var waiter=setInterval(()=>{
     $("._sp-export-button").on("click",exportProgress)
     HAS_UPDATED=true
     clearInterval(waiter);
-},1000)
+},3000)
 
 var FIT_NESSE_DIALOG
 var showFitnesseCreateDialog=()=>{
@@ -190,34 +192,61 @@ var typeTo=(str)=>{
 //0 ¼ ½ ¾ 1
 // 对应 1,2,3,4,
 var toggleTempMark=(pathName,dom)=>{
+    syncToRemote(pathName)
+    localStorage[pathName]=numberRPA(localStorage[pathName])
+    $(dom).text(getTempText(pathName))
+    // if(localStorage[pathName]=="1"){
+    //     localStorage[pathName]=2
+    //     $(dom).text("½")
+    // }else if(localStorage[pathName]=="2"){
+    //     localStorage[pathName]=3
+    //     $(dom).text("¾")
+    // }else if(localStorage[pathName]=="3"){
+    //     localStorage[pathName]=4
+    //     $(dom).text("OK")
+    // }else if(localStorage[pathName]=="4"){
+    //     localStorage[pathName]=1
+    //     $(dom).text("0")
+    // }else{
+    //     localStorage[pathName]=1
+    //     $(dom).text("0")
+    // }
 
-    if(localStorage[pathName]=="1"){
-        localStorage[pathName]=2
-        $(dom).text("½")
-    }else if(localStorage[pathName]=="2"){
-        localStorage[pathName]=3
-        $(dom).text("¾")
-    }else if(localStorage[pathName]=="3"){
-        localStorage[pathName]=4
-        $(dom).text("OK")
-    }else if(localStorage[pathName]=="4"){
-        localStorage[pathName]=1
-        $(dom).text("0")
-    }else{
-        localStorage[pathName]=1
-        $(dom).text("0")
-    }
+}
+/**
+ * 加1,达到最大值变为0
+ * 1=>2,2=>3,3=>4,4=>0
+ * @type {{}}
+ */
+var numberRPA=(num)=>{
+    let max=4
+    let bb=Number(num)
+    bb +=1
+    if(bb>max)
+        return 0
+    return bb
 }
 var getTempText=(pathName)=>{
-    if(localStorage[pathName]=="1"){
-        return "0"
-    }else if(localStorage[pathName]=="2"){
-        return "½"
-    }else if(localStorage[pathName]=="3"){
-        return  "¾"
-    }else if(localStorage[pathName]=="4"){
-        return "OK"
-    }
+    let arr=["...","0","½","¾","OK"]
+    return arr[Number(localStorage[pathName])]
+    //
+    // if(localStorage[pathName]=="1"){
+    //     return "0"
+    // }else if(localStorage[pathName]=="2"){
+    //     return "½"
+    // }else if(localStorage[pathName]=="3"){
+    //     return  "¾"
+    // }else if(localStorage[pathName]=="4"){
+    //     return "OK"
+    // }
+}
+
+
+var getProjectId=()=>{
+    if(window.location.href.indexOf("http://yoda:9001/server/")>-1){
+        return window.location.href.replace("http://yoda:9001/server/","")
+    }else
+        return "all"
 }
 
 /**
@@ -232,11 +261,16 @@ var toUpWord=(str)=>{
     return arr.join("")
 }
 
-//console.log(toUpWord("/bi/cw/detail/entering"))
+/**
+ * 把服务器的数据同步到这里
+ */
+var SYNC_HOST2="http://172.16.52.181:8101/"
+var SYNC_HOST="http://127.0.0.1:8101/"
 
 function syncRemote() {
+    let projectId=getProjectId()
 
-    var remoteIP="http://172.16.52.181:8101/umockapi";
+    var remoteIP=SYNC_HOST+projectId;
     try{
         fetch(remoteIP)
             .then(response => response.json())
@@ -245,4 +279,26 @@ function syncRemote() {
         console.log(e)
     }
 
+}
+
+/**
+ * 把本地的标记同步到云端,不用实时同步!
+ */
+function syncToRemote(pathName) {
+    let projectId=getProjectId()
+    var remoteIP=SYNC_HOST+projectId;
+    try{
+        fetch(remoteIP,{
+            method: "post",
+            body:JSON.stringify({[pathName]:numberRPA(localStorage[pathName])}),
+
+            headers: {
+                "Content-Type": "application/json"
+            }
+        })
+            .then(response => response.json())
+            .then((json) => {Object.assign(localStorage,json)})
+    }catch(e){
+        console.log(e)
+    }
 }
