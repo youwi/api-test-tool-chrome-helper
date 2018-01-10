@@ -264,8 +264,7 @@ var toUpWord=(str)=>{
 /**
  * 把服务器的数据同步到这里
  */
-var SYNC_HOST2="http://172.16.52.181:8101/"
-var SYNC_HOST="http://127.0.0.1:8101/"
+var SYNC_HOST=localStorage["SYNC_HOST"]||"http://172.16.52.181:8101/"
 
 function syncRemote() {
     let projectId=getProjectId()
