@@ -35,6 +35,14 @@ chrome.devtools.network.onRequestFinished.addListener(
 
 );
 
+chrome.devtools.panels.create("API",
+    null,
+    "./src/devpanel.html",
+    function(panel) {
+        // code invoked on panel creation
+    }
+);
+chrome.devtools.panels.network
 chrome.devtools.inspectedWindow.eval('console.log(' +JSON.stringify(chrome.devtools)+ ')');
 
 /**
