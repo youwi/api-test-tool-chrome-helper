@@ -1,9 +1,9 @@
 {
   "manifest_version": 2,
-  "name": "umock-mark-extension",
+  "name": "umock-mark-extension @API test ",
   "version": "0.0.1",
   "version_name": "alpha",
-  "description": "just for umock.com",
+  "description": "just for lieluobo.com @ http://yoda:9001.  ",
   "devtools_page": "src/devtool.html",
   "icons": {
     "16": "images/icon16.png",
