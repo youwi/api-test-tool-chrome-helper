@@ -1,3 +1,4 @@
+chrome.devtools.inspectedWindow.eval('FIT_LIST=[]');
 
 chrome.devtools.network.onRequestFinished.addListener(
     function(request) {
@@ -22,6 +23,8 @@ chrome.devtools.network.onRequestFinished.addListener(
                 tpl+="| check  | json Structure| code,msg,body | true  |\\n"
                 tpl+="| check  | json Value    | msg            | OK    |\\n"
 
+                chrome.devtools.inspectedWindow.eval('window.FIT_LIST=[];FIT_LIST.push("' +tpl + '")');
+                chrome.devtools.inspectedWindow.eval('console.log(FIT_LIST)');
                 chrome.devtools.inspectedWindow.eval('console.log("' +tpl + '")');
             }
         } catch (e) {
@@ -31,6 +34,7 @@ chrome.devtools.network.onRequestFinished.addListener(
     }
 
 );
+
 chrome.devtools.inspectedWindow.eval('console.log(' +JSON.stringify(chrome.devtools)+ ')');
 
 /**

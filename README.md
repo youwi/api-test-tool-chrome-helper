@@ -9,7 +9,7 @@
 1. Click "Load Unpacked extension..."
 1. Select the repo directory
 1. edit manifest.json ,change ["http://yoda:9001/server/*"]" to ["<all_urls>"]
-
+1. reload
 
 >You can also drag and drop the directory on to the extensions page
 

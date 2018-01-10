@@ -7,8 +7,8 @@
 
 var HAS_UPDATED=false
 var base_ip="http://172.16.52.181:9090/"
-var sc=`<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js" integrity="sha256-VazP97ZCwtekAsvgPBSUwPFKdrwD3unUfSGVYrahUqU=" crossorigin="anonymous"></script>`
 var jq=`<script src="http://code.jquery.com/jquery-1.12.4.min.js"     integrity="sha256-ZosEbRLbNQzLpnKIkEdrPv7lOy9C27hHQ+Xp8a4MxAQ="     crossorigin="anonymous"></script>`
+var sc=`<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js" integrity="sha256-VazP97ZCwtekAsvgPBSUwPFKdrwD3unUfSGVYrahUqU=" crossorigin="anonymous"></script>`
 var jqtheme=`<link rel="stylesheet" type="text/css" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css"/>`
 var mo=`<form>
              <label for="name">FitNesse Server IP</label><br/>
@@ -27,13 +27,23 @@ var mo=`<form>
          </form>`
 
 var waiter=setInterval(()=>{
-    console.log("running")
+    if(window.location.href.indexOf("yoda")===-1){
+        clearInterval(waiter);
+        return
+    }
+    if(window.location.href==="http://yoda:9001/server/"){
+        clearInterval(waiter);
+        return
+    }
+    console.log("umock plugin running")
 
     var paths=$(".path-li");
     if($.isEmptyObject(paths))
         return
     if(HAS_UPDATED)
         return
+
+
 
 
     $(".project-title").append("<div id='dialog-form'>"+mo+"</div>")
@@ -223,3 +233,16 @@ var toUpWord=(str)=>{
 }
 
 //console.log(toUpWord("/bi/cw/detail/entering"))
+
+function syncRemote() {
+
+    var remoteIP="http://172.16.52.181:8101/umockapi";
+    try{
+        fetch(remoteIP)
+            .then(response => response.json())
+            .then((json) => {Object.assign(localStorage,json)})
+    }catch(e){
+        console.log(e)
+    }
+
+}
