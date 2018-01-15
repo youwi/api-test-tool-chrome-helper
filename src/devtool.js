@@ -1,11 +1,13 @@
 chrome.devtools.inspectedWindow.eval('FIT_LIST=[]');
 
+
 chrome.devtools.network.onRequestFinished.addListener(
     function(request) {
 
         try {
             if (request.request.url.toString().indexOf("/api/") > -1) {
-                 chrome.devtools.inspectedWindow.eval('console.log(' +JSON.stringify(request) + ')');
+
+                chrome.devtools.inspectedWindow.eval('console.log(' +JSON.stringify(request) + ')');
                 // //注意这是回调方法
                 //
                 // request.getContent((response)=>{
@@ -26,6 +28,9 @@ chrome.devtools.network.onRequestFinished.addListener(
                 chrome.devtools.inspectedWindow.eval('window.FIT_LIST=[];FIT_LIST.push("' +tpl + '")');
                 chrome.devtools.inspectedWindow.eval('console.log(FIT_LIST)');
                 chrome.devtools.inspectedWindow.eval('console.log("' +tpl + '")');
+
+                chrome.runtime.sendMessage(chrome.devtools.inspectedWindow.tabId,tpl)
+
             }
         } catch (e) {
             chrome.devtools.inspectedWindow.eval('console.log("error")');
@@ -43,6 +48,15 @@ chrome.devtools.panels.create("API",
     }
 );
 chrome.devtools.panels.network
+
+var backgroundPageConnection = chrome.runtime.connect({
+    name: "API"
+});
+backgroundPageConnection.onMessage.addListener(function (message) {
+    // Handle responses from the background page, if any
+
+});
+
 chrome.devtools.inspectedWindow.eval('console.log(' +JSON.stringify(chrome.devtools)+ ')');
 
 /**

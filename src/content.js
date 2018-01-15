@@ -35,6 +35,9 @@ var waiter=setInterval(()=>{
         clearInterval(waiter);
         return
     }
+    //提前添加jquery
+    $(".project-title").append(jq)
+
     //同步服务器数据
     syncRemote();
     console.log("umock plugin running")
@@ -46,10 +49,7 @@ var waiter=setInterval(()=>{
         return
 
 
-
-
     $(".project-title").append("<div id='dialog-form'>"+mo+"</div>")
-    $(".project-title").append(jq)
     $(".project-title").append(sc)
     $(".project-title").append(jqtheme)
 
@@ -228,7 +228,9 @@ var numberRPA=(num)=>{
 }
 var getTempText=(pathName)=>{
     let arr=["...","0","½","¾","OK"]
-    return arr[Number(localStorage[pathName])]
+    if(localStorage[pathName]=='null' || localStorage[pathName] ==null)
+        localStorage[pathName]=0
+    return  arr[Number(localStorage[pathName])] ||'0'
     //
     // if(localStorage[pathName]=="1"){
     //     return "0"

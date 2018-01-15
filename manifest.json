@@ -21,7 +21,12 @@
   "content_scripts": [
     {
       "matches": ["http://yoda:9001/server/*","http://*.lieluobo.testing/*"],
-      "js": ["src/jquery-3.2.1.min.js","src/content.js","jquery-ui-1.12.1/jquery-ui.js"],
+      "js": [
+        "src/jquery-3.2.1.min.js",
+        "src/content.js",
+        "src/devpanel.js",
+        "jquery-ui-1.12.1/jquery-ui.js"
+      ],
       "run_at":"document_end"
     }
   ],
