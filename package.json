@@ -24,5 +24,8 @@
   "bugs": {
     "url": "https://github.com/eanplatter/chrome-extention-starter/issues"
   },
-  "homepage": "https://github.com/eanplatter/chrome-extention-starter#readme"
+  "homepage": "https://github.com/eanplatter/chrome-extention-starter#readme",
+  "dependencies": {
+    "httpsnippet": "^1.16.5"
+  }
 }

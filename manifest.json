@@ -24,7 +24,6 @@
       "js": [
         "src/jquery-3.2.1.min.js",
         "src/content.js",
-        "src/devpanel.js",
         "jquery-ui-1.12.1/jquery-ui.js"
       ],
       "run_at":"document_end"

@@ -29,6 +29,8 @@ chrome.devtools.network.onRequestFinished.addListener(
                 tpl+="| check  | json Structure| code,msg,body | true  |\\n"
                 tpl+="| check  | json Value    | msg            | OK    |\\n"
 
+
+
                 //chrome.devtools.inspectedWindow.eval('window.FIT_LIST=[];FIT_LIST.push("' +tpl + '")');
                 //chrome.devtools.inspectedWindow.eval('console.log(FIT_LIST)');
                 //chrome.devtools.inspectedWindow.eval('console.log("' +tpl + '")');
@@ -69,7 +71,8 @@ function buildFitScript(request) {
     return tpl;
 }
 function buildPythonScript(request) {
-    //TODO
+    let  snippet = new HTTPSnippet(request)
+    return snippet.convert('python')
 }
 /**
  *  use global function to save info.
@@ -81,6 +84,7 @@ var PANEL_SESSION={
     currentType:1,
     filterBlackList:["api/v1/spans"]
 }
+var type_list=["..","Fitnesse","Python3","Python3/request","JavaScript","node.js","node.js/request"]
 
 chrome.devtools.panels.create("API",
     null,
@@ -88,20 +92,27 @@ chrome.devtools.panels.create("API",
     function(panel) {
         panel.onShown.addListener(function(win) {
             PANEL_SESSION.document=win.document
-            PANEL_SESSION.document.querySelector('#typeFitnesse').addEventListener('click', function() {
-                PANEL_SESSION.currentType=1
-            }, false);
-            PANEL_SESSION.document.querySelector('#typePython').addEventListener('click', function() {
-                PANEL_SESSION.currentType=2
-            }, false);
-            PANEL_SESSION.document.querySelector('#clearSession').addEventListener('click', function() {
-                clearSession()
-            }, false);
-
+            PANEL_SESSION.document.querySelector('#typeFitnesse').addEventListener('click', eventA, false);
+            PANEL_SESSION.document.querySelector('#typePython').addEventListener('click', eventB, false);
+            PANEL_SESSION.document.querySelector('#clearSession').addEventListener('click', eventC, false);
             initSession()
         });
     }
 );
+function eventA() {
+    PANEL_SESSION.currentType=1;
+    PANEL_SESSION.document.querySelector("#api_type").innerHTML=type_list[PANEL_SESSION.currentType];
+    initSession()
+}
+function eventB() {
+    PANEL_SESSION.currentType=2;
+    PANEL_SESSION.document.querySelector("#api_type").innerHTML=type_list[PANEL_SESSION.currentType];
+    initSession()
+}
+function eventC() {
+    clearSession()
+}
+
 function isInBlackList(url) {
     let out=false
     PANEL_SESSION.filterBlackList.map((str)=>{
@@ -114,9 +125,14 @@ function isInBlackList(url) {
 
 function clearSession() {
     PANEL_SESSION.requests=[]
+    initSession();
 }
 function initSession() {
+    let elements = PANEL_SESSION.document.getElementsByTagName('pre')
+    while (elements[0]) elements[0].parentNode.removeChild(elements[0])
     PANEL_SESSION.requests.map(t=>pureAdd(t))
+    PANEL_SESSION.document.querySelector("#api_count").innerHTML=PANEL_SESSION.requests.length;
+    PANEL_SESSION.document.querySelector("#api_type").innerHTML=type_list[PANEL_SESSION.currentType];
 }
 function pureAdd(obj) {
     if(isInBlackList(obj.url)) return
@@ -134,7 +150,7 @@ function pureAdd(obj) {
         p.innerHTML=intext
         root.append(p);
         PANEL_SESSION.document.querySelector("#api_count").innerHTML=PANEL_SESSION.requests.length;
-        PANEL_SESSION.document.querySelector("#api_type").innerHTML=PANEL_SESSION.currentType;
+        PANEL_SESSION.document.querySelector("#api_type").innerHTML=type_list[PANEL_SESSION.currentType];
     }
 }
 
