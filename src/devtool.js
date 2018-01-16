@@ -29,6 +29,12 @@ chrome.devtools.network.onRequestFinished.addListener(
                 chrome.devtools.inspectedWindow.eval('console.log(FIT_LIST)');
                 chrome.devtools.inspectedWindow.eval('console.log("' +tpl + '")');
 
+                chrome.extension.sendMessage(JSON.stringify(request.request))
+                chrome.extension.sendMessage("XX");
+                if(__PANEL_DOCUMENT__!=null){
+                    __PANEL_DOCUMENT__.document.querySelector("#api_root").innerHTML = JSON.stringify(request.request);
+                }
+
                 chrome.runtime.sendMessage(chrome.devtools.inspectedWindow.tabId,tpl)
 
             }
@@ -39,11 +45,21 @@ chrome.devtools.network.onRequestFinished.addListener(
     }
 
 );
+/**
+ *  use global function to save info.
+ */
 
+var __PANEL_DOCUMENT__=null
 chrome.devtools.panels.create("API",
     null,
     "./src/devpanel.html",
     function(panel) {
+        panel.onShown.addListener(function(win) {
+            console.log('i think this is the right onshow');
+            var status = win.document.querySelector("#api_root");
+            status.innerHTML = "Fixing to make magic.";
+            __PANEL_DOCUMENT__=win
+        });
         // code invoked on panel creation
     }
 );
@@ -54,7 +70,7 @@ var backgroundPageConnection = chrome.runtime.connect({
 });
 backgroundPageConnection.onMessage.addListener(function (message) {
     // Handle responses from the background page, if any
-
+    document.querySelector('#root').innerHTML = message.content;
 });
 
 chrome.devtools.inspectedWindow.eval('console.log(' +JSON.stringify(chrome.devtools)+ ')');

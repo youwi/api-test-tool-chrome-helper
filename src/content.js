@@ -1,5 +1,8 @@
 /**
  * Created by yu on 2017/7/21.
+ * 处理 http://yoda:9001/server/
+ *
+ * 嵌入脚本同步信息用的
  */
 
 //console.log(document.getElementsByClassName("path-li"))
