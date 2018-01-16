@@ -47,6 +47,7 @@ chrome.devtools.network.onRequestFinished.addListener(
 );
 /**
  *  use global function to save info.
+ *  代替 devpanel.js来处理dom元素.
  */
 
 var __PANEL_DOCUMENT__=null
@@ -63,17 +64,7 @@ chrome.devtools.panels.create("API",
         // code invoked on panel creation
     }
 );
-chrome.devtools.panels.network
 
-var backgroundPageConnection = chrome.runtime.connect({
-    name: "API"
-});
-backgroundPageConnection.onMessage.addListener(function (message) {
-    // Handle responses from the background page, if any
-    document.querySelector('#root').innerHTML = message.content;
-});
-
-chrome.devtools.inspectedWindow.eval('console.log(' +JSON.stringify(chrome.devtools)+ ')');
 
 /**
  * 分离URL,导致参数重复
