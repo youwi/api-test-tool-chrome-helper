@@ -76,8 +76,34 @@ button:disabled {
 </style>
 <body>
 <div id="api_root">
+    <button id="typeFitnesse">Format Fitnesse</button>
+    <button id="typePython">Format Python</button>
+    <button id="clearSession">clear</button>
+
+    <div><span>Count:</span><span id="api_count"></span></div>
+    <div><span>Type:</span><span id="api_type"></span></div>
+
+    <code>
+        6
+        | script | Connect Server| http://www.lieluobo.testing/api/biz/project/c/indexProjects?_=1516089031147|
+        | set Body| {\"keyword\":\"职位\",\"page\":1,\"size\":20,\"status\":0,\"sort\":\"updatedAt:desc\"} |
+        | post| | check | json Structure| code,msg,body | true | | check | json Value | msg | OK |
+
+        | script | Connect Server| http://www.lieluobo.testing/api/biz/project/c/indexProjects?_=1516089072228|
+        | set Body| {\"keyword\":\"职位\",\"page\":1,\"size\":20,\"status\":0,\"sort\":\"updatedAt:desc\"} |
+        | post| | check | json Structure| code,msg,body | true | | check | json Value | msg | OK |
+
+        | script | Connect Server| https://tracing.lieluobo.com/api/v1/spans| undefined| options|
+        | check | json Structure| code,msg,body | true | | check | json Value | msg | OK |
+
+        | script | Connect Server| https://tracing.lieluobo.com/api/v1/spans|
+        | set Body| [{\"traceId\":\"4bffb640c5884c34\",\"id\":\"4bffb640c5884c34\",\"name\":\"post\",\"timestamp\":1516089072228000,\"duration\":554000,\"annotations\":[{\"value\":\"cs\",\"timestamp\":1516089072228000,\"endpoint\":{\"serviceName\":\"c.fe\"}},{\"value\":\"cr\",\"timestamp\":1516089072782000,\"endpoint\":{\"serviceName\":\"c.fe\"}}],\"binaryAnnotations\":[{\"key\":\"http.url\",\"value\":\"/api/biz/project/c/indexProjects\",\"endpoint\":{\"serviceName\":\"c.fe\"}},{\"key\":\"http.status_code\",\"value\":\"200\",\"endpoint\":{\"serviceName\":\"c.fe\"}}]}] |\n| post| | check | json Structure| code,msg,body | true | | check | json Value | msg | OK |
+
+    </code>
     Empty
 </div>
+
+
 <script src="src/devpanel.js"></script>
 </body>
 </html>
