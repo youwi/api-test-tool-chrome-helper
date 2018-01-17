@@ -175,7 +175,7 @@ function spUrl(req) {
  */
 function fillBodyOrParam(req){
     if(req.method=="POST"){
-        if(req.postData.text!=null &&req.postData.text.length>60 ){
+        if(req.postData &&req.postData.text!=null &&req.postData.text.length>60 ){
             return "| set Body| {{{ \\n"+excp(JSON.stringify(JSON.parse(req.postData.text),0,4))+"\\n }}}|\\n"
         }
         return "| set Body| "+excp(req.postData.text)+" |\\n"
@@ -189,7 +189,7 @@ function fillBodyOrParam(req){
 }
 function fillBodyOrParamNotExt(req){
     if(req.method=="POST"){
-        if(req.postData.text!=null &&req.postData.text.length>60 ){
+        if(req.postData &&req.postData.text!=null &&req.postData.text.length>60 ){
             return "| set Body| {{{ \n"+JSON.stringify(JSON.parse(req.postData.text),0,4)+" \n }}}|\n"
         }
         return "| set Body| "+req.postData.text+" |\n"
