@@ -163,7 +163,7 @@ function appendToApiPanel(obj) {
  * 分离URL,导致参数重复
  */
 function spUrl(req) {
-    if(req.method=="GET"){
+    if(req.method.toLocaleLowerCase()==="get"){
         return req.url.split("?")[0]
     }
     return req.url
@@ -173,33 +173,29 @@ function spUrl(req) {
  * @param req
  * @return {*}
  */
-function fillBodyOrParam(req){
-    if(req.method=="POST"){
-        if(req.postData &&req.postData.text!=null &&req.postData.text.length>60 ){
-            return "| set Body| {{{ \\n"+excp(JSON.stringify(JSON.parse(req.postData.text),0,4))+"\\n }}}|\\n"
+var CHAR_EXP="\\n"
+
+function fillBodyOrParam(req,expchar){
+    if(expchar==null)
+        expchar=CHAR_EXP;
+    if(req.method.toLocaleLowerCase()==="post"){
+        if(req.postData && req.postData.text!=null &&req.postData.text.length>60 ){
+            return "| set Body| {{{ "+expchar+excp(JSON.stringify(JSON.parse(req.postData.text),0,4))+expchar+" }}}|"+expchar
+        }else if(req.postData ){
+            return "| set Body| "+excp(req.postData.text)+" |"+expchar
+        }else{
+            return "| set Body| {} |"+expchar
         }
-        return "| set Body| "+excp(req.postData.text)+" |\\n"
-    }else if(req.method=="GET"){
-        var out=""
-        for(var item of req.queryString){
-            out+="| set Param | " +item.name +" |   | "+item.value+"  |\\n"
+    }else if(req.method.toLocaleLowerCase()==="get"){
+        let out=""
+        for(let item of req.queryString){
+            out+="| set Param | " +item.name +" |   | "+item.value+"  |"+expchar
         }
         return out
     }
 }
 function fillBodyOrParamNotExt(req){
-    if(req.method=="POST"){
-        if(req.postData &&req.postData.text!=null &&req.postData.text.length>60 ){
-            return "| set Body| {{{ \n"+JSON.stringify(JSON.parse(req.postData.text),0,4)+" \n }}}|\n"
-        }
-        return "| set Body| "+req.postData.text+" |\n"
-    }else if(req.method=="GET"){
-        var out=""
-        for(var item of req.queryString){
-            out+="| set Param | " +item.name +" |   | "+item.value+"  |\n"
-        }
-        return out
-    }
+    fillBodyOrParam(req,"\n")
 }
 /**
  * 转义引号为
