@@ -4,7 +4,8 @@
     <meta charset="UTF-8">
 </head>
 <title>Redux DevTools</title>
-<style>html {
+<style>
+html {
     height: 100%;
     width: 100%;
 }
@@ -79,6 +80,17 @@ button:disabled {
     <button id="typeFitnesse">Format Fitnesse</button>
     <button id="typePython">Format Python</button>
     <button id="clearSession">clear</button>
+    <select id="selectType">
+        <option value="python">python/requests-mini</option>
+        <option value="python">python/native</option>
+        <option>python/requests</option>
+        <option>javaScript/xhr</option>
+        <option>javaScript/jquery</option>
+        <option>javaScript/fetch</option>
+        <option>javaScript/fetch</option>
+        <option>javaScript/fetch</option>
+    </select>
+
 
     <div><span>Count:</span><span id="api_count"></span></div>
     <div><span>Type:</span><span id="api_type"></span></div>

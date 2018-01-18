@@ -89,7 +89,7 @@ function buildFitScriptResponse(request) {
 }
 function buildPythonScript(request) {
     let  snippet = new HTTPSnippet(request)
-    return snippet.convert('python')
+    return snippet.convert('python',"requestMini")
 }
 /**
  *  use global function to save info.
@@ -107,6 +107,7 @@ chrome.devtools.panels.create("API",
             PANEL_SESSION.document.querySelector('#typeFitnesse').addEventListener('click', eventA, false);
             PANEL_SESSION.document.querySelector('#typePython').addEventListener('click', eventB, false);
             PANEL_SESSION.document.querySelector('#clearSession').addEventListener('click', eventC, false);
+            PANEL_SESSION.document.querySelector('#selectType').addEventListener('select', eventD, false);
             PANEL_SESSION.document.querySelector('#api_match').innerHTML=PANEL_SESSION.filterWhiteList.join(",")
 
             initSession()
@@ -125,6 +126,9 @@ function eventB() {
 }
 function eventC() {
     clearSession()
+}
+function eventD(v) {
+    console.log(v)
 }
 
 function isInBlackList(url) {
