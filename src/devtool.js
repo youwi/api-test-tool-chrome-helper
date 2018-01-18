@@ -1,3 +1,11 @@
+var PANEL_SESSION={
+    document:null,
+    requests:[],
+    currentType:1,
+    filterBlackList:["api/v1/spans"],
+    filterWhiteList:["/api/"],
+}
+
 chrome.devtools.inspectedWindow.eval('FIT_LIST=[]');
 
 
@@ -5,7 +13,8 @@ chrome.devtools.network.onRequestFinished.addListener(
     function(request) {
 
         try {
-            if (request.request.url.toString().indexOf("/api/") > -1) {
+            //if (request.request.url.toString().indexOf("/api/") > -1) {
+            if(isInWhiteList(request.request.url)){
 
                 //chrome.devtools.inspectedWindow.eval('console.log(' +JSON.stringify(request) + ')');
                 if( isInBlackList(request.request.url)){
@@ -21,22 +30,17 @@ chrome.devtools.network.onRequestFinished.addListener(
                 // chrome.devtools.network.getHAR((log)=>{
                 //     chrome.devtools.inspectedWindow.eval('console.log(' +JSON.stringify(log) + ')');
                 // })
-
-                var tpl="";
-                tpl+="| script | Connect Server| "+spUrl(request.request)+"|\\n"
-                tpl+=fillBodyOrParam(request.request)
-                tpl+="| "+request.request.method.toLowerCase()+"|\\n"
-                tpl+="| check  | json Structure| code,msg,body | true  |\\n"
-                tpl+="| check  | json Value    | msg            | OK    |\\n"
-
-
+                 request.getContent((response)=>{
+                    request.request.response=response
+                 });
 
                 //chrome.devtools.inspectedWindow.eval('window.FIT_LIST=[];FIT_LIST.push("' +tpl + '")');
                 //chrome.devtools.inspectedWindow.eval('console.log(FIT_LIST)');
                 //chrome.devtools.inspectedWindow.eval('console.log("' +tpl + '")');
 
-
-                appendToApiPanel(request.request)
+                setTimeout(()=>{
+                    appendToApiPanel(request.request)
+                },50)
             }
         } catch (e) {
             chrome.devtools.inspectedWindow.eval('console.error(' +JSON.stringify(e) + ')');
@@ -68,7 +72,20 @@ function buildFitScript(request) {
     tpl+="| "+request.method.toLowerCase()+"|\n"
     tpl+="| check  | json Structure| code,msg,body | true  |\n"
     tpl+="| check  | json Value    | msg            | OK    |\n"
+    tpl+=buildFitScriptResponse(request)
     return tpl;
+}
+function buildFitScriptResponse(request) {
+    if(request.response){
+        if(request.response.constructor==String){
+            return "| check  | text Contain | "+request.response+"| true | \n"
+        }else {
+            return "| check  | text Contain | "+JSON.stringify(request.response,0,4)  +"| true | \n"
+        }
+    }else{
+        return ""
+    }
+
 }
 function buildPythonScript(request) {
     let  snippet = new HTTPSnippet(request)
@@ -78,12 +95,7 @@ function buildPythonScript(request) {
  *  use global function to save info.
  *  代替 devpanel.js来处理dom元素.
  */
-var PANEL_SESSION={
-    document:null,
-    requests:[],
-    currentType:1,
-    filterBlackList:["api/v1/spans"]
-}
+
 var type_list=["..","Fitnesse","Python3","Python3/request","JavaScript","node.js","node.js/request"]
 
 chrome.devtools.panels.create("API",
@@ -95,6 +107,8 @@ chrome.devtools.panels.create("API",
             PANEL_SESSION.document.querySelector('#typeFitnesse').addEventListener('click', eventA, false);
             PANEL_SESSION.document.querySelector('#typePython').addEventListener('click', eventB, false);
             PANEL_SESSION.document.querySelector('#clearSession').addEventListener('click', eventC, false);
+            PANEL_SESSION.document.querySelector('#api_match').innerHTML=PANEL_SESSION.filterWhiteList.join(",")
+
             initSession()
         });
     }
@@ -116,6 +130,15 @@ function eventC() {
 function isInBlackList(url) {
     let out=false
     PANEL_SESSION.filterBlackList.map((str)=>{
+        if(url.indexOf(str)>-1){
+            out=true
+        }
+    })
+    return out
+}
+function isInWhiteList(url) {
+    let out=false
+    PANEL_SESSION.filterWhiteList.map((str)=>{
         if(url.indexOf(str)>-1){
             out=true
         }
@@ -180,7 +203,7 @@ function fillBodyOrParam(req,expchar){
         expchar=CHAR_EXP;
     if(req.method.toLocaleLowerCase()==="post"){
         if(req.postData && req.postData.text!=null &&req.postData.text.length>60 ){
-            return "| set Body| {{{ "+expchar+excp(JSON.stringify(JSON.parse(req.postData.text),0,4))+expchar+" }}}|"+expchar
+            return "| set Body| {{{ "+expchar+excp(JSON.stringify(JSON.parse(req.postData.text),0,4),expchar)+expchar+" }}}|"+expchar
         }else if(req.postData ){
             return "| set Body| "+excp(req.postData.text)+" |"+expchar
         }else{
@@ -195,11 +218,14 @@ function fillBodyOrParam(req,expchar){
     }
 }
 function fillBodyOrParamNotExt(req){
-    fillBodyOrParam(req,"\n")
+   return  fillBodyOrParam(req,"\n")
 }
 /**
- * 转义引号为
+ * 转义引号
  */
-function excp(str){
-   return  str.replace(/"/g,'\\"')
+function excp(str,expchar){
+    if(expchar=="\\n")
+        return  str.replace(/"/g,'\\"')
+    else
+        return  str
 }
