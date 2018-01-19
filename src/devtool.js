@@ -182,7 +182,7 @@ function pureAdd(obj) {
         PANEL_SESSION.document.querySelector("#api_count").innerHTML=PANEL_SESSION.requests.length;
         PANEL_SESSION.document.querySelector("#api_type").innerHTML=type_list[PANEL_SESSION.currentType];
 
-        hljs.highlightBlock(p);
+     //   hljs.highlightBlock(p);
     }
 }
 
