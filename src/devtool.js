@@ -174,10 +174,15 @@ function pureAdd(obj) {
         }
         let root= PANEL_SESSION.document.querySelector("#api_root");
         let p = PANEL_SESSION.document.createElement("pre");
-        p.innerHTML=intext
+        let code= PANEL_SESSION.document.createElement("code");
+        code.className="javascript"
+        code.innerHTML=intext
         root.append(p);
+        p.append(code)
         PANEL_SESSION.document.querySelector("#api_count").innerHTML=PANEL_SESSION.requests.length;
         PANEL_SESSION.document.querySelector("#api_type").innerHTML=type_list[PANEL_SESSION.currentType];
+
+        hljs.highlightBlock(p);
     }
 }
 
