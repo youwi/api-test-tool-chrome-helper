@@ -93,28 +93,28 @@ button:disabled {
     <span><span>Match Url:</span><input id="api_match" value=""/></span>
     <span><span>Count:</span><span id="api_count"></span></span>
     <span><span>Type:</span><span id="api_type"></span></span>
-    <pre>
-        url = BASE_URL + SwaggerURL.bind("http://hr.lieluobo.testing/api/biz/hr/orders/count")
+    <!--<pre>-->
+        <!--url = BASE_URL + SwaggerURL.bind("http://hr.lieluobo.testing/api/biz/hr/orders/count")-->
 
-payload = {
-    "page": 1,
-    "size": 100,
-    "keyword": "",
-    "hideCancel": true,
-    "orderFilter": "0",
-    "positionId": null,
-    "degree": null,
-    "dateRange": null,
-    "sort": "updatedAt:desc",
-    "labels": [],
-    "status": [
-        31,
-        33
-    ]
-}
-headers = LOGIN_HEADERS
-response = HttpClient.client.request("POST", url, json=payload, headers=headers)
-    </pre>
+<!--payload = {-->
+    <!--"page": 1,-->
+    <!--"size": 100,-->
+    <!--"keyword": "",-->
+    <!--"hideCancel": true,-->
+    <!--"orderFilter": "0",-->
+    <!--"positionId": null,-->
+    <!--"degree": null,-->
+    <!--"dateRange": null,-->
+    <!--"sort": "updatedAt:desc",-->
+    <!--"labels": [],-->
+    <!--"status": [-->
+        <!--31,-->
+        <!--33-->
+    <!--]-->
+<!--}-->
+<!--headers = LOGIN_HEADERS-->
+<!--response = HttpClient.client.request("POST", url, json=payload, headers=headers)-->
+    <!--</pre>-->
 
 
 </div>
