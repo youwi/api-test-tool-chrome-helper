@@ -108,7 +108,7 @@ chrome.devtools.panels.create("API",
             PANEL_SESSION.document.querySelector('#typePython').addEventListener('click', eventB, false);
             PANEL_SESSION.document.querySelector('#clearSession').addEventListener('click', eventC, false);
             PANEL_SESSION.document.querySelector('#selectType').addEventListener('select', eventD, false);
-            PANEL_SESSION.document.querySelector('#api_match').innerHTML=PANEL_SESSION.filterWhiteList.join(",")
+            PANEL_SESSION.document.querySelector('#api_match').value=PANEL_SESSION.filterWhiteList.join(",")
 
             initSession()
         });

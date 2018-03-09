@@ -146,16 +146,19 @@ var exportProgress=()=>{
     $(".path-li .path-head").map((i,dom)=>{
         var method=$(dom).find(".path-method").text()
         var url=$(dom).find(".path-name").text()
+        var desc=$(dom).find(".path-description").text()
 
         out[url+"    \t\t"+method]=  getTempText(method+":"+url)
-        outList.push({url,method,state:getTempText(method+":"+url)})
+        outList.push({url,method,desc,state:getTempText(method+":"+url)})
     })
     console.log(out)
     outTable="<table>"+outList.map((item)=>{
        return  "<tr>"
            +"<td>"+item.url+"</td>"
            +"<td>"+item.method+"</td>"
+           +"<td>"+item.desc+"</td>"
            +"<td>"+item.state+"</td>"
+
            + "</tr>"
     }).join(" ")+"</table>"
     $("._sp-export-content").append(outTable)
