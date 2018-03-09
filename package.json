@@ -26,6 +26,6 @@
   },
   "homepage": "https://github.com/eanplatter/chrome-extention-starter#readme",
   "dependencies": {
-    "httpsnippet-fe": "^1.16.6"
+    "httpsnippet-fe": "^1.16.7"
   }
 }

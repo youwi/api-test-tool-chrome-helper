@@ -17,6 +17,11 @@
 
 You can refer to the Chrome extension [Get Started](https://developer.chrome.com/extensions/getstarted) page for more.
 
+    
+    npm install
+    cp node_modules/httpsnippet-fe/dist/httpsnippet-dist.js src
+
+
 
 
 ![Preview1](https://github.com/youwi/chrome-extension-umock/raw/master/dist/preview-1.png)

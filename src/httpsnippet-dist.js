@@ -1,4 +1,3 @@
-HTTPSnippet =
 /******/ (function(modules) { // webpackBootstrap
 /******/ 	// The module cache
 /******/ 	var installedModules = {};
@@ -70,7 +69,7 @@ HTTPSnippet =
 
 "use strict";
 
-var util=__webpack_require__(10);
+var util=__webpack_require__(8);
 
 /**
  * Helper object to format and aggragate lines of code.
@@ -425,7 +424,7 @@ module.exports = g;
 
 /*<replacement>*/
 
-var processNextTick = __webpack_require__(8);
+var processNextTick = __webpack_require__(9);
 /*</replacement>*/
 
 /*<replacement>*/
@@ -2598,125 +2597,6 @@ function objectToString(o) {
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-/* WEBPACK VAR INJECTION */(function(process) {
-
-if (!process.version ||
-    process.version.indexOf('v0.') === 0 ||
-    process.version.indexOf('v1.') === 0 && process.version.indexOf('v1.8.') !== 0) {
-  module.exports = nextTick;
-} else {
-  module.exports = process.nextTick;
-}
-
-function nextTick(fn, arg1, arg2, arg3) {
-  if (typeof fn !== 'function') {
-    throw new TypeError('"callback" argument must be a function');
-  }
-  var len = arguments.length;
-  var args, i;
-  switch (len) {
-  case 0:
-  case 1:
-    return process.nextTick(fn);
-  case 2:
-    return process.nextTick(function afterTickOne() {
-      fn.call(null, arg1);
-    });
-  case 3:
-    return process.nextTick(function afterTickTwo() {
-      fn.call(null, arg1, arg2);
-    });
-  case 4:
-    return process.nextTick(function afterTickThree() {
-      fn.call(null, arg1, arg2, arg3);
-    });
-  default:
-    args = new Array(len - 1);
-    i = 0;
-    while (i < args.length) {
-      args[i++] = arguments[i];
-    }
-    return process.nextTick(function afterTick() {
-      fn.apply(null, args);
-    });
-  }
-}
-
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(1)))
-
-/***/ }),
-/* 9 */
-/***/ (function(module, exports, __webpack_require__) {
-
-/* eslint-disable node/no-deprecated-api */
-var buffer = __webpack_require__(5)
-var Buffer = buffer.Buffer
-
-// alternative to using Object.keys for old browsers
-function copyProps (src, dst) {
-  for (var key in src) {
-    dst[key] = src[key]
-  }
-}
-if (Buffer.from && Buffer.alloc && Buffer.allocUnsafe && Buffer.allocUnsafeSlow) {
-  module.exports = buffer
-} else {
-  // Copy properties from require('buffer')
-  copyProps(buffer, exports)
-  exports.Buffer = SafeBuffer
-}
-
-function SafeBuffer (arg, encodingOrOffset, length) {
-  return Buffer(arg, encodingOrOffset, length)
-}
-
-// Copy static methods from Buffer
-copyProps(Buffer, SafeBuffer)
-
-SafeBuffer.from = function (arg, encodingOrOffset, length) {
-  if (typeof arg === 'number') {
-    throw new TypeError('Argument must not be a number')
-  }
-  return Buffer(arg, encodingOrOffset, length)
-}
-
-SafeBuffer.alloc = function (size, fill, encoding) {
-  if (typeof size !== 'number') {
-    throw new TypeError('Argument must be a number')
-  }
-  var buf = Buffer(size)
-  if (fill !== undefined) {
-    if (typeof encoding === 'string') {
-      buf.fill(fill, encoding)
-    } else {
-      buf.fill(fill)
-    }
-  } else {
-    buf.fill(0)
-  }
-  return buf
-}
-
-SafeBuffer.allocUnsafe = function (size) {
-  if (typeof size !== 'number') {
-    throw new TypeError('Argument must be a number')
-  }
-  return Buffer(size)
-}
-
-SafeBuffer.allocUnsafeSlow = function (size) {
-  if (typeof size !== 'number') {
-    throw new TypeError('Argument must be a number')
-  }
-  return buffer.SlowBuffer(size)
-}
-
-
-/***/ }),
-/* 10 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
 /* WEBPACK VAR INJECTION */(function(process, Buffer) {
 
 
@@ -3537,6 +3417,125 @@ exports._exceptionWithHostPort = function(err,
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(1), __webpack_require__(5).Buffer))
 
 /***/ }),
+/* 9 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+/* WEBPACK VAR INJECTION */(function(process) {
+
+if (!process.version ||
+    process.version.indexOf('v0.') === 0 ||
+    process.version.indexOf('v1.') === 0 && process.version.indexOf('v1.8.') !== 0) {
+  module.exports = nextTick;
+} else {
+  module.exports = process.nextTick;
+}
+
+function nextTick(fn, arg1, arg2, arg3) {
+  if (typeof fn !== 'function') {
+    throw new TypeError('"callback" argument must be a function');
+  }
+  var len = arguments.length;
+  var args, i;
+  switch (len) {
+  case 0:
+  case 1:
+    return process.nextTick(fn);
+  case 2:
+    return process.nextTick(function afterTickOne() {
+      fn.call(null, arg1);
+    });
+  case 3:
+    return process.nextTick(function afterTickTwo() {
+      fn.call(null, arg1, arg2);
+    });
+  case 4:
+    return process.nextTick(function afterTickThree() {
+      fn.call(null, arg1, arg2, arg3);
+    });
+  default:
+    args = new Array(len - 1);
+    i = 0;
+    while (i < args.length) {
+      args[i++] = arguments[i];
+    }
+    return process.nextTick(function afterTick() {
+      fn.apply(null, args);
+    });
+  }
+}
+
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(1)))
+
+/***/ }),
+/* 10 */
+/***/ (function(module, exports, __webpack_require__) {
+
+/* eslint-disable node/no-deprecated-api */
+var buffer = __webpack_require__(5)
+var Buffer = buffer.Buffer
+
+// alternative to using Object.keys for old browsers
+function copyProps (src, dst) {
+  for (var key in src) {
+    dst[key] = src[key]
+  }
+}
+if (Buffer.from && Buffer.alloc && Buffer.allocUnsafe && Buffer.allocUnsafeSlow) {
+  module.exports = buffer
+} else {
+  // Copy properties from require('buffer')
+  copyProps(buffer, exports)
+  exports.Buffer = SafeBuffer
+}
+
+function SafeBuffer (arg, encodingOrOffset, length) {
+  return Buffer(arg, encodingOrOffset, length)
+}
+
+// Copy static methods from Buffer
+copyProps(Buffer, SafeBuffer)
+
+SafeBuffer.from = function (arg, encodingOrOffset, length) {
+  if (typeof arg === 'number') {
+    throw new TypeError('Argument must not be a number')
+  }
+  return Buffer(arg, encodingOrOffset, length)
+}
+
+SafeBuffer.alloc = function (size, fill, encoding) {
+  if (typeof size !== 'number') {
+    throw new TypeError('Argument must be a number')
+  }
+  var buf = Buffer(size)
+  if (fill !== undefined) {
+    if (typeof encoding === 'string') {
+      buf.fill(fill, encoding)
+    } else {
+      buf.fill(fill)
+    }
+  } else {
+    buf.fill(0)
+  }
+  return buf
+}
+
+SafeBuffer.allocUnsafe = function (size) {
+  if (typeof size !== 'number') {
+    throw new TypeError('Argument must be a number')
+  }
+  return Buffer(size)
+}
+
+SafeBuffer.allocUnsafeSlow = function (size) {
+  if (typeof size !== 'number') {
+    throw new TypeError('Argument must be a number')
+  }
+  return buffer.SlowBuffer(size)
+}
+
+
+/***/ }),
 /* 11 */
 /***/ (function(module, exports) {
 
@@ -3891,7 +3890,7 @@ exports.PassThrough = __webpack_require__(37);
 
 /*<replacement>*/
 
-var processNextTick = __webpack_require__(8);
+var processNextTick = __webpack_require__(9);
 /*</replacement>*/
 
 module.exports = Writable;
@@ -3943,7 +3942,7 @@ var Stream = __webpack_require__(19);
 /*</replacement>*/
 
 /*<replacement>*/
-var Buffer = __webpack_require__(9).Buffer;
+var Buffer = __webpack_require__(10).Buffer;
 var OurUint8Array = global.Uint8Array || function () {};
 function _uint8ArrayToBuffer(chunk) {
   return Buffer.from(chunk);
@@ -4535,7 +4534,7 @@ Writable.prototype._destroy = function (err, cb) {
 "use strict";
 
 
-var Buffer = __webpack_require__(9).Buffer;
+var Buffer = __webpack_require__(10).Buffer;
 
 var isEncoding = Buffer.isEncoding || function (encoding) {
   encoding = '' + encoding;
@@ -4993,7 +4992,7 @@ module.exports = Array.isArray || function (arr) {
 
 /*<replacement>*/
 
-var processNextTick = __webpack_require__(8);
+var processNextTick = __webpack_require__(9);
 /*</replacement>*/
 
 module.exports = Readable;
@@ -5023,7 +5022,7 @@ var Stream = __webpack_require__(19);
 // TODO(bmeurer): Change this back to const once hole checks are
 // properly optimized away early in Ignition+TurboFan.
 /*<replacement>*/
-var Buffer = __webpack_require__(9).Buffer;
+var Buffer = __webpack_require__(10).Buffer;
 var OurUint8Array = global.Uint8Array || function () {};
 function _uint8ArrayToBuffer(chunk) {
   return Buffer.from(chunk);
@@ -5993,7 +5992,7 @@ module.exports = __webpack_require__(11).EventEmitter;
 
 /*<replacement>*/
 
-var processNextTick = __webpack_require__(8);
+var processNextTick = __webpack_require__(9);
 /*</replacement>*/
 
 // undocumented cb() API, needed for core, not for public API
@@ -7841,7 +7840,7 @@ exports.write = function (buffer, value, offset, isLE, mLen, nBytes) {
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
-var Buffer = __webpack_require__(9).Buffer;
+var Buffer = __webpack_require__(10).Buffer;
 /*</replacement>*/
 
 function copyBuffer(src, target, offset) {
@@ -10232,9 +10231,9 @@ module.exports = {
   ocaml: __webpack_require__(79),
   php: __webpack_require__(81),
   python: __webpack_require__(85),
-  ruby: __webpack_require__(89),
-  shell: __webpack_require__(91),
-  swift: __webpack_require__(95)
+  ruby: __webpack_require__(90),
+  shell: __webpack_require__(92),
+  swift: __webpack_require__(96)
 }
 
 
@@ -12364,7 +12363,9 @@ module.exports = {
 
   python3: __webpack_require__(86),
   requests: __webpack_require__(87),
-  requestMini:__webpack_require__(88)
+  requestMini:__webpack_require__(88),
+  simple:__webpack_require__(89)
+
 }
 
 
@@ -12484,7 +12485,7 @@ module.exports.info = {
  */
 
 
-var util=__webpack_require__(10);
+var util=__webpack_require__(8);
 
 var CodeBuilder = __webpack_require__(0)
 
@@ -12595,7 +12596,7 @@ module.exports.info = {
  */
 
 
-var util=__webpack_require__(10);
+var util=__webpack_require__(8);
 
 var CodeBuilder = __webpack_require__(0)
 
@@ -12627,7 +12628,7 @@ module.exports = function (source, options) {
   var jsonData= parsedText(source.postData.text)
 
   if (payload) {
-    code.push('payload = %s', jsonData)
+    code.push('json = %s', jsonData)
   }
 
   // Construct headers
@@ -12662,7 +12663,7 @@ module.exports = function (source, options) {
   var request = util.format('response = HttpClient.client.request("%s", url', method)
 
   if (payload) {
-    request += ', json=payload'
+    request += ', json=json'
   }
 
   if (headerCount > 0) {
@@ -12708,6 +12709,137 @@ function  parsedText(text) {
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
+/**
+ * @description
+ * HTTP code snippet generator for Python using Requests
+ *
+ * @author
+ * @montanaflynn
+ *
+ * for any questions or issues regarding the generated code snippet, please open an issue mentioning the author.
+ */
+
+
+var util = __webpack_require__(8);
+
+var CodeBuilder = __webpack_require__(0)
+
+module.exports = function (source, options) {
+  // Start snippet
+  var code = new CodeBuilder('    ')
+
+  // Import requests
+  // code.push('from Suites.HttpClient import HttpClient')
+  //     .blank()
+  // code.push('def test_at(time):')
+  //   .blank()
+
+
+  // Set URL URL_BASE_CRM + SwaggerURL.bind("/specialEvent/copy/1")
+  // code.push('url = BASE_URL + SwaggerURL.bind("%s")', source.url)
+  //     .blank()
+
+  // Construct query string
+  if (source.queryString.length) {
+    var qs = 'data = ' + JSON.stringify(source.queryObj, null, 4)
+
+    code.push(qs)
+      .blank()
+  }
+
+  // Construct payload
+  var payload = JSON.stringify(source.postData.text)
+  var jsonData = parsedText(source.postData.text)
+
+  if (payload) {
+    code.push('json = %s', jsonData)
+  }
+
+  // Construct headers
+  var header
+  var headers = source.allHeaders
+  var headerCount = Object.keys(headers).length
+
+  if (headerCount === 1) {
+    for (header in headers) {
+      code.push('headers = {\'%s\': \'%s\'}', header, headers[header])
+        .blank()
+    }
+  } else if (headerCount > 1) {
+    // var count = 1
+    //
+    // code.push('headers = LOGIN_HEADERS')
+    //
+    // for (header in headers) {
+    //   if (count++ !== headerCount) {
+    //     code.push(1, '\'%s\': "%s",', header, headers[header])
+    //   } else {
+    //     code.push(1, '\'%s\': "%s"', header, headers[header])
+    //   }
+    // }
+    //
+    // code.push(1, '}')
+    //     .blank()
+  }
+
+  // Construct request
+  var method = source.method
+
+  var request = util.format('json = %s("%s", data)', method.toLocaleUpperCase(), source.url)
+
+
+  if (headerCount > 0) {
+    //  request += ', headers=headers'
+  }
+
+  if (qs) {
+    //  request += ', params=querystring'
+  }
+
+  //request += ')'
+
+  code.push(request)
+    .blank()
+
+    // Print response
+    .push('jsonContain(json,{"code": 0,"msg":"OK"})')
+    .blank()
+
+
+  if (source.response) {
+    if (String === source.response.constructor)
+      code.push("# response example:"+source.response)
+    else
+      code.push("# response example:"+JSON.stringify(source.response))
+  }
+
+  return code.join()
+}
+
+module.exports.info = {
+  key: 'requests',
+  title: 'Requests',
+  link: 'http://docs.python-requests.org/en/latest/api/#requests.request',
+  description: 'Requests HTTP library'
+}
+
+// response = requests.request("POST", url, data=payload, headers=headers, params=querystring)
+function parsedText(text) {
+  try {
+    if (text != null) {
+      return JSON.stringify(JSON.parse(text), 0, 4)
+    }
+  } catch (e) {
+    return text
+  }
+}
+
+
+/***/ }),
+/* 90 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
 
 
 module.exports = {
@@ -12718,12 +12850,12 @@ module.exports = {
     default: 'native'
   },
 
-  native: __webpack_require__(90)
+  native: __webpack_require__(91)
 }
 
 
 /***/ }),
-/* 90 */
+/* 91 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -12791,7 +12923,7 @@ module.exports.info = {
 
 
 /***/ }),
-/* 91 */
+/* 92 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -12805,14 +12937,14 @@ module.exports = {
     default: 'curl'
   },
 
-  curl: __webpack_require__(92),
-  httpie: __webpack_require__(93),
-  wget: __webpack_require__(94)
+  curl: __webpack_require__(93),
+  httpie: __webpack_require__(94),
+  wget: __webpack_require__(95)
 }
 
 
 /***/ }),
-/* 92 */
+/* 93 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -12828,7 +12960,7 @@ module.exports = {
 
 
 
-var util=__webpack_require__(10);
+var util=__webpack_require__(8);
 
 var helpers = __webpack_require__(16)
 var CodeBuilder = __webpack_require__(0)
@@ -12911,7 +13043,7 @@ module.exports.info = {
 
 
 /***/ }),
-/* 93 */
+/* 94 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -13040,7 +13172,7 @@ module.exports.info = {
 
 
 /***/ }),
-/* 94 */
+/* 95 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -13100,7 +13232,7 @@ module.exports.info = {
 
 
 /***/ }),
-/* 95 */
+/* 96 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -13114,12 +13246,12 @@ module.exports = {
     default: 'nsurlsession'
   },
 
-  nsurlsession: __webpack_require__(96)
+  nsurlsession: __webpack_require__(97)
 }
 
 
 /***/ }),
-/* 96 */
+/* 97 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -13135,7 +13267,7 @@ module.exports = {
 
 
 
-var helpers = __webpack_require__(97)
+var helpers = __webpack_require__(98)
 var CodeBuilder = __webpack_require__(0)
 
 module.exports = function (source, options) {
@@ -13264,7 +13396,7 @@ module.exports.info = {
 
 
 /***/ }),
-/* 97 */
+/* 98 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
