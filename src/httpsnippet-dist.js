@@ -1,3 +1,4 @@
+var HTTPSnippet =
 /******/ (function(modules) { // webpackBootstrap
 /******/ 	// The module cache
 /******/ 	var installedModules = {};
@@ -12727,6 +12728,7 @@ var CodeBuilder = __webpack_require__(0)
 module.exports = function (source, options) {
   // Start snippet
   var code = new CodeBuilder('    ')
+  code.blank()
 
   // Import requests
   // code.push('from Suites.HttpClient import HttpClient')
@@ -12741,10 +12743,10 @@ module.exports = function (source, options) {
 
   // Construct query string
   if (source.queryString.length) {
-    var qs = 'data = ' + JSON.stringify(source.queryObj, null, 4)
+    var qs = 'data = ' + JSON.stringify(source.queryObj, null, 2)
 
     code.push(qs)
-      .blank()
+     // .blank()
   }
 
   // Construct payload
@@ -12752,7 +12754,7 @@ module.exports = function (source, options) {
   var jsonData = parsedText(source.postData.text)
 
   if (payload) {
-    code.push('json = %s', jsonData)
+    code.push('data = %s', jsonData)
   }
 
   // Construct headers
@@ -12799,11 +12801,10 @@ module.exports = function (source, options) {
   //request += ')'
 
   code.push(request)
-    .blank()
+  //  .blank()
 
     // Print response
     .push('jsonContain(json,{"code": 0,"msg":"OK"})')
-    .blank()
 
 
   if (source.response) {

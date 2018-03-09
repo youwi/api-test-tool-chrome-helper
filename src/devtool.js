@@ -88,9 +88,15 @@ function buildFitScriptResponse(request) {
 
 }
 function buildPythonScript(request) {
-    let  snippet = new HTTPSnippet(request)
     //return snippet.convert('python',"requestMini")
-    return snippet.convert('python',"simple")
+    try{
+        let  snippet = new HTTPSnippet(request)
+
+        return snippet.convert('python',"simple")
+
+    }catch (e){
+        return e
+    }
 
 }
 /**

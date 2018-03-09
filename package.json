@@ -4,6 +4,7 @@
   "description": "A starter kit for chrome extensions.",
   "main": "index.js",
   "scripts": {
+    "copy": "cp node_modules/httpsnippet-fe/dist/httpsnippet-dist.js src",
     "start": "nodemon --watch src --exec npm run enclave",
     "enclave-build": "node node_modules/enclave/src/build.js",
     "enclave-eject": "node node_modules/enclave/src/eject/index.js",
@@ -26,6 +27,6 @@
   },
   "homepage": "https://github.com/eanplatter/chrome-extention-starter#readme",
   "dependencies": {
-    "httpsnippet-fe": "^1.16.7"
+    "httpsnippet-fe": "^1.16.9"
   }
 }
