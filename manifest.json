@@ -1,6 +1,6 @@
 {
   "manifest_version": 2,
-  "name": "umock-mark-extension @API test ",
+  "name": "API Test tool Chrome Extension @ yuzc",
   "version": "0.0.1",
   "version_name": "alpha",
   "description": "just for lieluobo.com @ http://yoda:9001.  ",
@@ -30,7 +30,7 @@
     }
   ],
   "author": "youcxx@gmail.com",
-  "homepage_url": "https://github.com/youwi/chrome-extension-umock",
+  "homepage_url": "https://github.com/youwi/api-test-tool-chrome-helper",
   "incognito": "spanning",
   "minimum_chrome_version": "46",
   "permissions": [
