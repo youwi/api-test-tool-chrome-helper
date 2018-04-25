@@ -4,7 +4,7 @@
   "version": "0.0.1",
   "version_name": "alpha",
   "description": "just for lieluobo.com @ http://yoda:9001.  ",
-  "devtools_page": "src/devtool.html",
+  "devtools_page": "html/devtool.html",
   "icons": {
     "16": "images/icon16.png",
     "48": "images/icon48.png",
@@ -12,19 +12,19 @@
   },
   "browser_action": {
     "default_icon": {
-      "20": "images/icon20.png",
-      "32": "images/icon32.png"
+      "20": "images/favicon-32x32.png",
+      "32": "images/favicon-32x32.png"
     },
     "default_title": "MarkTable",
-    "default_popup": "dist/index.html"
+    "default_popup": "html/popup.html"
   },
   "content_scripts": [
     {
       "matches": ["http://yoda:9001/server/*","http://*.lieluobo.testing/*"],
       "js": [
-        "src/jquery-3.2.1.min.js",
+        "lib/jquery-3.2.1.min.js",
         "src/content.js",
-        "jquery-ui-1.12.1/jquery-ui.js"
+        "lib/jquery-ui.min.js"
       ],
       "run_at":"document_end"
     }

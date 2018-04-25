@@ -309,3 +309,7 @@ function syncToRemote(pathName) {
         console.log(e)
     }
 }
+
+ document.styleSheets[0].addRule('.ui-draggable .ui-dialog-titlebar', 'display: none');
+
+ 

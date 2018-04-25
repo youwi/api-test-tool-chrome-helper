@@ -108,7 +108,7 @@ var type_list=["..","Fitnesse","Python3","Python3/request","JavaScript","node.js
 
 chrome.devtools.panels.create("API",
     null,
-    "./src/devpanel.html",
+    "../html/devpanel.html",
     function(panel) {
         panel.onShown.addListener(function(win) {
             PANEL_SESSION.document=win.document
