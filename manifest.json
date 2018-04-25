@@ -1,14 +1,14 @@
 {
   "manifest_version": 2,
   "name": "API Test tool Chrome Extension @ yuzc",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "version_name": "alpha",
   "description": "just for lieluobo.com @ http://yoda:9001.  ",
   "devtools_page": "html/devtool.html",
   "icons": {
-    "16": "images/icon16.png",
-    "48": "images/icon48.png",
-    "128": "images/icon128.png"
+    "16": "images/favicon-200x200.png",
+    "48": "images/favicon-200x200.png",
+    "128": "images/favicon-200x200.png"
   },
   "browser_action": {
     "default_icon": {
@@ -40,7 +40,6 @@
   ],
   "background": {
     "scripts": [
-      "src/background.js"
     ]
   },
 
