@@ -22,7 +22,3 @@ You can refer to the Chrome extension [Get Started](https://developer.chrome.com
     cp node_modules/httpsnippet-fe/dist/httpsnippet-dist.js src
 
 
-
-
-![Preview1](https://github.com/youwi/chrome-extension-umock/raw/master/dist/preview-1.png)
-![Preview2](https://github.com/youwi/chrome-extension-umock/raw/master/dist/preview-2.png)
