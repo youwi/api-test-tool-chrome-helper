@@ -21,4 +21,21 @@ You can refer to the Chrome extension [Get Started](https://developer.chrome.com
     npm install
     cp node_modules/httpsnippet-fe/dist/httpsnippet-dist.js src
 
+## 导出功能已经不维护了
+功能直接加到umock中了   
+ 
+    --
+     "content_scripts": [
+        {
+          "matches": ["http://yoda:9001/server/*","http://*.lieluobo.testing/*"],
+          "js": [
+            "lib/jquery-3.2.1.min.js",
+            "src/content.js",
+            "lib/jquery-ui.min.js"
+          ],
+          "run_at":"document_end"
+        }
+      ],
+
+         -- "default_popup": "html/popup.html"
 

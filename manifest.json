@@ -1,9 +1,9 @@
 {
   "manifest_version": 2,
-  "name": "API Test tool Chrome Extension @ yuzc",
+  "name": "API Test tool",
   "version": "0.0.2",
   "version_name": "alpha",
-  "description": "just for lieluobo.com @ http://yoda:9001.  ",
+  "description": "http record for test",
   "devtools_page": "html/devtool.html",
   "icons": {
     "16": "images/favicon-200x200.png",
@@ -15,20 +15,9 @@
       "20": "images/favicon-32x32.png",
       "32": "images/favicon-32x32.png"
     },
-    "default_title": "MarkTable",
-    "default_popup": "html/popup.html"
+    "default_title": "ApiTest"
   },
-  "content_scripts": [
-    {
-      "matches": ["http://yoda:9001/server/*","http://*.lieluobo.testing/*"],
-      "js": [
-        "lib/jquery-3.2.1.min.js",
-        "src/content.js",
-        "lib/jquery-ui.min.js"
-      ],
-      "run_at":"document_end"
-    }
-  ],
+
   "author": "youcxx@gmail.com",
   "homepage_url": "https://github.com/youwi/api-test-tool-chrome-helper",
   "incognito": "spanning",
