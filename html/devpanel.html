@@ -5,98 +5,189 @@
 </head>
 <title>Redux DevTools</title>
 <style>
-html {
-    height: 100%;
-    width: 100%;
-}
-
-body {
-   // overflow: hidden;
-    height: 100%;
-    width: 100%;
-    min-width: 350px;
-    min-height: 400px;
-    margin: 0;
-    padding: 0;
-    font-family: "Helvetica Neue", "Lucida Grande", sans-serif;
-    font-size: 11px;
-    background-color: rgba(53, 59, 70, 0.04); //rgb(53, 59, 70);
-    color: #000075;
-}
-
-a {
-    color: #fff;
-}
-
-#root {
-    height: 100%;
-}
-
-#root > div {
-    height: 100%;
-}
-
-.ReactCodeMirror {
-    overflow: auto;
-    height: 100%;
-}
-
-button:disabled {
-    opacity: 0.5;
-    cursor: initial !important;
-}
-
-@media print {
-    @page {
-        size: auto;
-        margin: 0;
+    html {
+        height: 100%;
+        width: 100%;
     }
 
     body {
-        position: static;
+    / / overflow: hidden;
+        height: 100%;
+        width: 100%;
+        min-width: 350px;
+        min-height: 400px;
+        margin: 0;
+        padding: 0;
+        font-family: "Helvetica Neue", "Lucida Grande", sans-serif;
+        font-size: 11px;
+        background-color: rgba(53, 59, 70, 0.04);
+    / / rgb(53, 59, 70);
+        color: #000075;
     }
 
-    #root > div > div:not(:nth-child(2)) {
-        display: none !important;
+    a {
+        color: #fff;
     }
 
-    #root > div > div:nth-child(2) {
-        overflow: visible !important;
-        position: absolute !important;
-        z-index: 2147483647;
-        page-break-after: avoid;
+    #root {
+        height: 100%;
     }
 
-    #root > div > div:nth-child(2) * {
-        overflow: visible !important;
+    #root > div {
+        height: 100%;
     }
-}</style>
-<style>body {
-    min-height: 100px;
-}
+
+    .ReactCodeMirror {
+        overflow: auto;
+        height: 100%;
+    }
+
+    button:disabled {
+        opacity: 0.5;
+        cursor: initial !important;
+    }
+
+    @media print {
+        @page {
+            size: auto;
+            margin: 0;
+        }
+
+        body {
+            position: static;
+        }
+
+        #root > div > div:not(:nth-child(2)) {
+            display: none !important;
+        }
+
+        #root > div > div:nth-child(2) {
+            overflow: visible !important;
+            position: absolute !important;
+            z-index: 2147483647;
+            page-break-after: avoid;
+        }
+
+        #root > div > div:nth-child(2) * {
+            overflow: visible !important;
+        }
+    }</style>
+<style>
+    body {
+        min-height: 100px;
+    }
+
+    .button-st {
+        box-shadow: rgb(233, 233, 233) 0px 1px 1px 0px;
+        color: rgb(52, 73, 94);
+        cursor: pointer;
+        height: 25px;
+        min-height: 0px;
+        text-decoration: none solid rgb(52, 73, 94);
+        text-size-adjust: 100%;
+        column-rule-color: rgb(52, 73, 94);
+        perspective-origin: 32.5px 12.5px;
+        transform-origin: 32.5px 12.5px;
+        caret-color: rgb(52, 73, 94);
+        background: rgba(0, 0, 0, 0) none repeat scroll 0% 0% / auto padding-box border-box;
+        border: 1px solid rgb(211, 211, 211);
+        border-radius: 4px 4px 4px 4px;
+        font: normal normal 400 normal 13px / 13px "Source Sans Pro", "Helvetica Neue", Arial, sans-serif;
+        margin: 0px 0px 0px 4px;
+        outline: rgb(52, 73, 94) none 0px;
+        padding: 5px 10px;
+        transition: all 0.2s ease 0s;
+    }
+    .top-pannel{
+        padding: 5px;
+    }
+    .top-pannel select{
+        height: 25px;
+        outline: none;
+        line-height: 40px;
+    }
+    .top-pannel input{
+        line-height: 21px;
+        outline: none;
+    }
+
+    .gray-head{
+        border-top: 1px solid rgb(223, 223, 223);
+        border-right: 0px none rgb(153, 153, 153);
+        border-bottom: 1px solid rgb(233, 233, 233);
+        border-left: 1px solid rgb(233, 233, 233);
+        line-height: 25px;
+        border-radius: 4px 0 0 4px;
+
+        display: inline-block;
+        padding: 0 1px 0 5px;
+    }
+    .gray-end{
+        border-top: 1px solid rgb(233, 233, 233);
+        border-left: 0px none rgb(153, 153, 153);
+        border-bottom: 1px solid rgb(233, 233, 233);
+        border-right: 1px solid rgb(233, 233, 233);
+        border-radius: 0 4px 4px 0;
+        margin-left: -3px;
+        line-height: 25px;
+        display: inline-block;
+        padding: 0 5px 0 10px;
+    }
+
+    .gia{
+        display: flex;
+    }
+    .gib{
+        display: inline-block;
+    }
+    button:visited{
+        color: purple;
+    }
+    button:hover{
+        color: black;
+    }
+    button:active {
+        background:#ccc;
+        color: blue;
+    }
+    /*button:focus {*/
+        /*background:#ccc;*/
+        /*color: blue;*/
+    /*}*/
+
 </style>
 <body>
 <div id="api_root">
-    <button id="typeFitnesse">Format Fitnesse</button>
-    <button id="typePython">Format Python</button>
-    <button id="clearSession">clear</button>
-    <select id="selectType">
-        <option value="python">python/requests-mini</option>
-        <option value="python">python/native</option>
-        <option>python/requests</option>
-        <option>javaScript/xhr</option>
-        <option>javaScript/jquery</option>
-        <option>javaScript/fetch</option>
-        <option>javaScript/fetch</option>
-        <option>javaScript/fetch</option>
-    </select>
-    <span><span>Match Url:</span><input id="api_match" value=""/></span>
-    <span><span>Count:</span><span id="api_count"></span></span>
-    <span><span>Type:</span><span id="api_type"></span></span>
-    <!--<pre>-->
-        <!--url = BASE_URL + SwaggerURL.bind("http://hr.lieluobo.testing/api/biz/hr/orders/count")-->
+    <div class="top-pannel">
+        <span class="gib">
+            <span class="gia">
+            <span class="gray-head">Match Url:</span><input id="api_match" value="" placeholder="/api/"/>
+            <span id="api_count" class="gray-end">0</span>
+        </span>
+        </span>
 
-<!--payload = {-->
+
+        <button id="typeFitnesse" class="button button-st">Format Fitnesse</button>
+        <button id="typePython" class="button-st">Format Python</button>
+        <button id="clearSession" class="button-st">clear</button>
+        <select id="selectType">
+            <option value="python">python/requests-mini</option>
+            <option value="python">python/native</option>
+            <option>python/requests</option>
+            <option>javaScript/xhr</option>
+            <option>javaScript/jquery</option>
+            <option>javaScript/fetch</option>
+            <option>javaScript/fetch</option>
+            <option>javaScript/fetch</option>
+        </select>
+        <span><span>:</span><span id="api_type"></span></span>
+        <div id="content"></div>
+    </div>
+
+    <!--<pre>-->
+    <!--url = BASE_URL + SwaggerURL.bind("http://hr.lieluobo.testing/api/biz/hr/orders/count")-->
+
+    <!--payload = {-->
     <!--"page": 1,-->
     <!--"size": 100,-->
     <!--"keyword": "",-->
@@ -108,28 +199,25 @@ button:disabled {
     <!--"sort": "updatedAt:desc",-->
     <!--"labels": [],-->
     <!--"status": [-->
-        <!--31,-->
-        <!--33-->
+    <!--31,-->
+    <!--33-->
     <!--]-->
-<!--}-->
-<!--headers = LOGIN_HEADERS-->
-<!--response = HttpClient.client.request("POST", url, json=payload, headers=headers)-->
+    <!--}-->
+    <!--headers = LOGIN_HEADERS-->
+    <!--response = HttpClient.client.request("POST", url, json=payload, headers=headers)-->
     <!--</pre>-->
 
 
 </div>
 
-<script src="src/httpsnippet-dist.js"></script>
-
-<script src="src/devpanel.js"></script>
 
 <!--<link rel="stylesheet"  href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/default.min.css">-->
 <!--<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>-->
 </body>
 </html>
 <template>
-root= document.querySelector("#api_root");
-p = document.createElement("pre");
-p.innerHTML="--fa-we-f-aw-efa"
-root.append(p);
+    root= document.querySelector("#api_root");
+    p = document.createElement("pre");
+    p.innerHTML="--fa-we-f-aw-efa"
+    root.append(p);
 </template>
