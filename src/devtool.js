@@ -1,7 +1,7 @@
 var PANEL_SESSION = {
   document: null,
   requests: [],
-  domList:[],
+  domList: [],
   currentType: 1,
   filterBlackList: ["api/v1/spans"],
   filterWhiteList: ["/api/"],
@@ -80,9 +80,11 @@ function initWithChrome(browser) {
           domFormatFitnesse().addEventListener('click', reformatToFitnesse, false);
           domFormatPythonMini().addEventListener('click', reformatToPython, false);
           domClear().addEventListener('click', clearAll, false);
-          domSelectFormatType().addEventListener('select', eventD, false);
+          domSelectFormatType().addEventListener('change', reformatBySelect, false);
           domInputApiMatch().addEventListener('input', _.debounce(apiMatchChanged, 20), false);
+          PANEL_SESSION.filterWhiteList[0] = localStorage.filterWhiteList || "/api"
           domInputApiMatch().value = PANEL_SESSION.filterWhiteList.join(",")
+          domSelectFormatType().innerHTML = getSelectOptions()
           initSession()
         });
       }
@@ -134,18 +136,36 @@ function buildFitScriptResponse(request) {
 
 }
 
+function getSelectOptions() {
+  let options = HTTPSnippet.availableTargets()
+  let out = []
+  options.map(item => {
+    item.clients.map(client => {
+      out.push(` <option value="${item.key}/${client.key}">${item.key}/${client.key}</option>`)
+    })
+  })
+  return out
+}
+
 function buildPythonScript(request) {
   //return snippet.convert('python',"requestMini")
   try {
     let snippet = new HTTPSnippet(request)
-
     return snippet.convert('python', "simple")
-
   } catch (e) {
     return e
   }
-
 }
+
+function buildLangScript(request) {
+  try {
+    let snippet = new HTTPSnippet(request)
+    return snippet.convert(PANEL_SESSION.currentLang, PANEL_SESSION.currentType)
+  } catch (e) {
+    return e
+  }
+}
+
 
 /**
  *  use global function to save info.
@@ -170,18 +190,27 @@ function clearAll() {
   clearSession()
 }
 
-function eventD(v) {
-  console.log(v)
+function reformatBySelect(v) {
+  if (v.target) {
+
+    try {
+      PANEL_SESSION.currentType = v.target.value.split("/")[1]
+      PANEL_SESSION.currentLang = v.target.value.split("/")[0]
+    } catch (e) {
+      return e
+    }
+  }
+  initSession()
 }
 
 function apiMatchChanged(v) {
-  domApiType().innerHTML="apiMatchChanged init";
-
-  if (v && v.target){
+  domApiType().innerHTML = "apiMatchChanged init";
+  if (v && v.target) {
+    localStorage.filterWhiteList = v.target.value
     PANEL_SESSION.filterWhiteList[0] = v.target.value
     initSession()
-  }else{
-    domApiType().innerHTML="apiMatchChanged Error";
+  } else {
+    domApiType().innerHTML = "apiMatchChanged Error";
     console.error("not get v apiMatchChanged")
   }
 }
@@ -236,19 +265,20 @@ function initSession() {
  */
 function buildCodeDom(obj) {
   if (isInBlackList(obj.url)) return
-  if ((PANEL_SESSION.document != null )&& isInWhiteList(obj.url)) {
-    let intext = null
-    if (PANEL_SESSION.currentType == 1) {
-      intext = buildFitScript(obj)
-    } else if (PANEL_SESSION.currentType == 2) {
-      intext = buildPythonScript(obj)
-    } else if (PANEL_SESSION.currentType == 0) {
-      intext = JSON.stringify(obj)
+  if ((PANEL_SESSION.document != null) && isInWhiteList(obj.url)) {
+    let outScriptText = null
+    if (PANEL_SESSION.currentType === 1) {
+      outScriptText = buildFitScript(obj)
+    } else if (PANEL_SESSION.currentType === 2) {
+      outScriptText = buildPythonScript(obj)
+    } else {
+      outScriptText = buildLangScript(obj)
     }
+
     let pre = PANEL_SESSION.document.createElement("pre");
     let code = PANEL_SESSION.document.createElement("code");
     code.className = "javascript";
-    code.innerHTML = intext;
+    code.innerHTML = outScriptText;
     pre.append(code)
     return pre
   }
@@ -263,6 +293,7 @@ function appendAllToContent(domList) {
   domApiCount().innerHTML = PANEL_SESSION.requests.length;
   domApiType().innerHTML = type_list[PANEL_SESSION.currentType];
 }
+
 /**
  * daynic append to Content
  */
