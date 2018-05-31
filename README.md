@@ -21,6 +21,8 @@ You can refer to the Chrome extension [Get Started](https://developer.chrome.com
     npm install
     cp node_modules/httpsnippet-fe/dist/httpsnippet-dist.js src
 
+# Preview 
+![](./preview2.png)
 ## 导出功能已经不维护了
 功能直接加到umock中了   
  
