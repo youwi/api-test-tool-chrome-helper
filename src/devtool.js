@@ -19,6 +19,10 @@ function domFormatFitnesse() {
   return PANEL_SESSION.document.querySelector('#typeFitnesse')
 }
 
+function domFormatFitnesseV2() {
+  return PANEL_SESSION.document.querySelector('#typeFitnesseV2')
+}
+
 function domFormatPythonMini() {
   return PANEL_SESSION.document.querySelector('#typePython')
 }
@@ -75,23 +79,26 @@ function initWithChrome(browser) {
       null,
       "../html/devpanel.html",
       function (panel) {
-        panel.onShown.addListener(function (win) {
-          PANEL_SESSION.document = win.document
-          domFormatFitnesse().addEventListener('click', reformatToFitnesse, false);
-          domFormatPythonMini().addEventListener('click', reformatToPython, false);
-          domClear().addEventListener('click', clearAll, false);
-          domSelectFormatType().addEventListener('change', reformatBySelect, false);
-          domInputApiMatch().addEventListener('input', _.debounce(apiMatchChanged, 20), false);
-          PANEL_SESSION.filterWhiteList[0] = localStorage.filterWhiteList || "/api"
-          domInputApiMatch().value = PANEL_SESSION.filterWhiteList.join(",")
-          domSelectFormatType().innerHTML = getSelectOptions()
-          initSession()
-        });
+        panel.onShown.addListener(panelOnShown);
       }
     );
 
   }
 }
+ function  panelOnShown(win){
+  PANEL_SESSION.document = win.document
+  domFormatFitnesse().addEventListener('click', reformatToFitnesse, false);
+  domFormatFitnesseV2().addEventListener('click',reformatToFitnesseV2,false);
+  domFormatPythonMini().addEventListener('click', reformatToPython, false);
+  domClear().addEventListener('click', clearAll, false);
+  domSelectFormatType().addEventListener('change', reformatBySelect, false);
+  domInputApiMatch().addEventListener('input', _.debounce(apiMatchChanged, 20), false);
+  PANEL_SESSION.filterWhiteList[0] = localStorage.filterWhiteList || "/api"
+  domInputApiMatch().value = PANEL_SESSION.filterWhiteList.join(",")
+  domSelectFormatType().innerHTML = getSelectOptions()
+  initSession()
+}
+window.panelOnShown=panelOnShown
 
 initWithChrome(chrome)
 
@@ -111,7 +118,14 @@ if (!('toJSON' in Error.prototype)) {
     writable: true
   });
 }
-
+function buildFitScriptV2(request) {
+  var tpl = "";
+  tpl += "| "+request.method.toUpperCase()+" | " + spUrl(request) + "|\n"
+  tpl += fillBodyOrParamNotExt(request).replace("| set Body |","| Body |")
+  tpl += "| check  | json Value    | msg            | OK    |\n"
+  tpl += buildFitScriptResponse(request).replace("| check  | text Contain |","| check text |")
+  return tpl;
+}
 function buildFitScript(request) {
   var tpl = "";
   tpl += "| script | Connect Server| " + spUrl(request) + "|\n"
@@ -135,7 +149,9 @@ function buildFitScriptResponse(request) {
   }
 
 }
-
+function postFitnesse() {
+  
+}
 function getSelectOptions() {
   let options = HTTPSnippet.availableTargets()
   let out = []
@@ -172,10 +188,16 @@ function buildLangScript(request) {
  *  代替 devpanel.js来处理dom元素.
  */
 
-var type_list = ["..", "Fitnesse", "Python3", "Python3/request", "JavaScript", "node.js", "node.js/request"]
+var type_list = ["..", "Fitnesse", "Python3", "Fit","Python3/request", "JavaScript", "node.js", "node.js/request"]
 
 function reformatToFitnesse() {
   PANEL_SESSION.currentType = 1;
+  domApiType().innerHTML = type_list[PANEL_SESSION.currentType];
+  initSession()
+}
+
+function reformatToFitnesseV2() {
+  PANEL_SESSION.currentType = 3;
   domApiType().innerHTML = type_list[PANEL_SESSION.currentType];
   initSession()
 }
@@ -271,24 +293,40 @@ function buildCodeDom(obj) {
       outScriptText = buildFitScript(obj)
     } else if (PANEL_SESSION.currentType === 2) {
       outScriptText = buildPythonScript(obj)
-    } else {
+    } else if(PANEL_SESSION.currentType===3){
+      outScriptText=buildFitScriptV2(obj)
+    }else{
       outScriptText = buildLangScript(obj)
     }
 
     let pre = PANEL_SESSION.document.createElement("pre");
     let code = PANEL_SESSION.document.createElement("code");
+
+  
     code.className = "javascript";
     code.innerHTML = outScriptText;
     pre.append(code)
+    pre.obj=obj
     return pre
   }
 }
 
+function buildButton(dom) {
+  let syncButton = PANEL_SESSION.document.createElement("button");
+  syncButton.onclick=()=>{console.log("....")}
+  syncButton.innerText="+";
+  syncButton.className="sync-button";
+  return syncButton
+}
+
 function appendAllToContent(domList) {
   // <pre><code>...</code>
-  let root = domContent();
   if (domList.length) {
-    domList.map(p => root.append(p))
+    domList.map(p =>{
+      domContent().append(buildButton(p))
+      domContent().append(PANEL_SESSION.document.createElement("br"))
+      domContent().append(p)
+    })
   }
   domApiCount().innerHTML = PANEL_SESSION.requests.length;
   domApiType().innerHTML = type_list[PANEL_SESSION.currentType];
@@ -300,6 +338,8 @@ function appendAllToContent(domList) {
 function appendToApiPanel(obj) {
   PANEL_SESSION.requests.push(obj);
   domApiCount().innerHTML = PANEL_SESSION.requests.length;
+  domContent().append(buildButton(obj))
+  domContent().append(PANEL_SESSION.document.createElement("br"))
   domContent().append(buildCodeDom(obj))
 }
 

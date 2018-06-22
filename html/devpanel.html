@@ -10,6 +10,13 @@
         width: 100%;
     }
 
+    .sync-button {
+        float: left;
+        left: -20px;
+        top: 20px;
+        position: relative;
+    }
+
     body {
     / / overflow: hidden;
         height: 100%;
@@ -98,20 +105,23 @@
         padding: 5px 10px;
         transition: all 0.2s ease 0s;
     }
-    .top-pannel{
+
+    .top-pannel {
         padding: 5px;
     }
-    .top-pannel select{
+
+    .top-pannel select {
         height: 25px;
         outline: none;
         line-height: 40px;
     }
-    .top-pannel input{
+
+    .top-pannel input {
         line-height: 21px;
         outline: none;
     }
 
-    .gray-head{
+    .gray-head {
         border-top: 1px solid rgb(223, 223, 223);
         border-right: 0px none rgb(153, 153, 153);
         border-bottom: 1px solid rgb(233, 233, 233);
@@ -122,7 +132,8 @@
         display: inline-block;
         padding: 0 1px 0 5px;
     }
-    .gray-end{
+
+    .gray-end {
         border-top: 1px solid rgb(233, 233, 233);
         border-left: 0px none rgb(153, 153, 153);
         border-bottom: 1px solid rgb(233, 233, 233);
@@ -134,40 +145,50 @@
         padding: 0 5px 0 10px;
     }
 
-    .gia{
+    .gia {
         display: flex;
     }
-    .gib{
+
+    .gib {
         display: inline-block;
     }
-    button:visited{
+
+    button:visited {
         color: purple;
     }
-    button:hover{
+
+    button:hover {
         color: black;
     }
+
     button:active {
-        background:#ccc;
+        background: #ccc;
         color: blue;
     }
-    pre{
-        border-top: 1px solid #ccc;
+
+    pre {
+        border-top: 1px solid #cccccc38;
         background: white;
         padding: 6px;
         margin: 6px;
-        border: solid 1px #ccc;
+        /* border: solid 1px #cccccc52; */
         border-radius: 2px;
-     //   transform: scale(0.8,0.8);
+        box-shadow: -10px 10px 97px -5px rgba(230, 205, 230, 1);
+
+        /*box-shadow: 1px 1px 1px 1px #88888840;*/
     }
-    #content{
+
+    #content {
         padding-left: 20px;
     }
-    code{
-       // border-top: 1px solid #ccc;
+
+    code {
+    / / border-top: 1 px solid #ccc;
     }
+
     /*button:focus {*/
-        /*background:#ccc;*/
-        /*color: blue;*/
+    /*background:#ccc;*/
+    /*color: blue;*/
     /*}*/
 
 </style>
@@ -180,11 +201,6 @@
             <span id="api_count" class="gray-end">0</span>
         </span>
         </span>
-
-
-        <button id="typeFitnesse" class="button button-st">Format Fitnesse</button>
-        <button id="typePython" class="button-st">Format Python</button>
-        <button id="clearSession" class="button-st">clear</button>
         <select id="selectType">
             <option value="python/simple">python/requests-mini</option>
             <option value="python">python/native</option>
@@ -196,6 +212,16 @@
             <option>javaScript/fetch</option>
         </select>
         <span><span>:</span><span id="api_type"></span></span>
+
+
+        <button id="typeFitnesse" class="button button-st">Format Fitnesse</button>
+        <button id="typeFitnesseV2" class="button button-st">Format V2</button>
+        <button id="typePython" class="button-st">Format Python</button>
+        <button id="clearSession" class="button-st">clear</button>
+        <!--<span class="gib">-->
+            <!--<span class="gray-head">Server:</span><input id="dom_server_url" value="" placeholder="/api/"/>-->
+            <!--<button id="dom-ab" class="button-st">+A</button>-->
+        <!--</span>-->
         <div id="content"></div>
     </div>
 
@@ -236,3 +262,26 @@
     p.innerHTML="--fa-we-f-aw-efa"
     root.append(p);
 </template>
+
+<script>
+  function addScript(src) {
+    let my_awesome_script = document.createElement('script');
+    my_awesome_script.setAttribute('src', src);
+    document.head.appendChild(my_awesome_script);
+  }
+
+  if (!chrome.devtools) {
+
+    addScript("../lib/lodash.custom.js")
+    addScript("../lib/httpsnippet-dist.js")
+    setTimeout(() => {
+      addScript("../src/devtool.js")
+      addScript("../src/debug-data.js")
+    }, 200)
+
+    setTimeout(() => {
+      panelOnShown(window)
+    }, 300)
+
+  }
+</script>
