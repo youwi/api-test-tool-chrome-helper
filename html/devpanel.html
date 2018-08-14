@@ -174,22 +174,12 @@
         /* border: solid 1px #cccccc52; */
         border-radius: 2px;
         box-shadow: -10px 10px 97px -5px rgba(230, 205, 230, 1);
-
-        /*box-shadow: 1px 1px 1px 1px #88888840;*/
     }
 
     #content {
         padding-left: 20px;
     }
 
-    code {
-    / / border-top: 1 px solid #ccc;
-    }
-
-    /*button:focus {*/
-    /*background:#ccc;*/
-    /*color: blue;*/
-    /*}*/
 
 </style>
 <body>
@@ -211,49 +201,18 @@
             <option>javaScript/fetch</option>
             <option>javaScript/fetch</option>
         </select>
-        <span><span>:</span><span id="api_type"></span></span>
-
-
-        <button id="typeFitnesse" class="button button-st">Format Fitnesse</button>
-        <button id="typeFitnesseV2" class="button button-st">Format V2</button>
+        <!--<button id="typeFitnesse" class="button button-st" >Format Fitnesse</button>-->
+        <button id="typeFitnesseV2" class="button button-st">Format Table</button>
         <button id="typePython" class="button-st">Format Python</button>
         <button id="clearSession" class="button-st">clear</button>
-        <!--<span class="gib">-->
-            <!--<span class="gray-head">Server:</span><input id="dom_server_url" value="" placeholder="/api/"/>-->
-            <!--<button id="dom-ab" class="button-st">+A</button>-->
-        <!--</span>-->
+
         <div id="content"></div>
     </div>
-
-    <!--<pre>-->
-    <!--url = BASE_URL + SwaggerURL.bind("http://hr.lieluobo.testing/api/biz/hr/orders/count")-->
-
-    <!--payload = {-->
-    <!--"page": 1,-->
-    <!--"size": 100,-->
-    <!--"keyword": "",-->
-    <!--"hideCancel": true,-->
-    <!--"orderFilter": "0",-->
-    <!--"positionId": null,-->
-    <!--"degree": null,-->
-    <!--"dateRange": null,-->
-    <!--"sort": "updatedAt:desc",-->
-    <!--"labels": [],-->
-    <!--"status": [-->
-    <!--31,-->
-    <!--33-->
-    <!--]-->
-    <!--}-->
-    <!--headers = LOGIN_HEADERS-->
-    <!--response = HttpClient.client.request("POST", url, json=payload, headers=headers)-->
-    <!--</pre>-->
 
 
 </div>
 
 
-<!--<link rel="stylesheet"  href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/default.min.css">-->
-<!--<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>-->
 </body>
 </html>
 <template>
@@ -263,6 +222,9 @@
     root.append(p);
 </template>
 
+
+<!--<link rel="stylesheet"  href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/default.min.css">-->
+<!--<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>-->
 <script>
   function addScript(src) {
     let my_awesome_script = document.createElement('script');
@@ -270,8 +232,8 @@
     document.head.appendChild(my_awesome_script);
   }
 
+  //调试时会用到
   if (!chrome.devtools) {
-
     addScript("../lib/lodash.custom.js")
     addScript("../lib/httpsnippet-dist.js")
     setTimeout(() => {
@@ -282,6 +244,5 @@
     setTimeout(() => {
       panelOnShown(window)
     }, 300)
-
   }
 </script>

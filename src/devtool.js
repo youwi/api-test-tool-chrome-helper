@@ -2,21 +2,13 @@ var PANEL_SESSION = {
   document: null,
   requests: [],
   domList: [],
-  currentType: 1,
+  currentLang: "table",
   filterBlackList: ["api/v1/spans"],
   filterWhiteList: ["/api/"],
 }
 
-function domRoot() {
-  return PANEL_SESSION.document.querySelector("#api_root")
-}
-
 function domContent() {
   return PANEL_SESSION.document.querySelector("#content")
-}
-
-function domFormatFitnesse() {
-  return PANEL_SESSION.document.querySelector('#typeFitnesse')
 }
 
 function domFormatFitnesseV2() {
@@ -35,9 +27,6 @@ function domInputApiMatch() {
   return PANEL_SESSION.document.querySelector('#api_match')
 }
 
-function domApiType() {
-  return PANEL_SESSION.document.querySelector("#api_type")
-}
 
 function domClear() {
   return PANEL_SESSION.document.querySelector('#clearSession')
@@ -85,10 +74,10 @@ function initWithChrome(browser) {
 
   }
 }
- function  panelOnShown(win){
+
+function panelOnShown(win) {
   PANEL_SESSION.document = win.document
-  domFormatFitnesse().addEventListener('click', reformatToFitnesse, false);
-  domFormatFitnesseV2().addEventListener('click',reformatToFitnesseV2,false);
+  domFormatFitnesseV2().addEventListener('click', reformatToTable, false);
   domFormatPythonMini().addEventListener('click', reformatToPython, false);
   domClear().addEventListener('click', clearAll, false);
   domSelectFormatType().addEventListener('change', reformatBySelect, false);
@@ -98,9 +87,6 @@ function initWithChrome(browser) {
   domSelectFormatType().innerHTML = getSelectOptions()
   initSession()
 }
-window.panelOnShown=panelOnShown
-
-initWithChrome(chrome)
 
 
 if (!('toJSON' in Error.prototype)) {
@@ -118,93 +104,47 @@ if (!('toJSON' in Error.prototype)) {
     writable: true
   });
 }
-function buildFitScriptV2(request) {
-  var tpl = "";
-  tpl += "| "+request.method.toUpperCase()+" | " + spUrl(request) + "|\n"
-  tpl += fillBodyOrParamNotExt(request).replace("| set Body |","| Body |")
-  tpl += "| check  | json Value    | msg            | OK    |\n"
-  tpl += buildFitScriptResponse(request).replace("| check  | text Contain |","| check text |")
-  return tpl;
-}
-function buildFitScript(request) {
-  var tpl = "";
-  tpl += "| script | Connect Server| " + spUrl(request) + "|\n"
-  tpl += fillBodyOrParamNotExt(request)
-  tpl += "| " + request.method.toLowerCase() + "|\n"
-  tpl += "| check  | json Structure| code,msg,body | true  |\n"
-  tpl += "| check  | json Value    | msg            | OK    |\n"
-  tpl += buildFitScriptResponse(request)
-  return tpl;
-}
 
-function buildFitScriptResponse(request) {
-  if (request.response) {
-    if (request.response.constructor == String) {
-      return "| check  | text Contain | " + request.response + "| true | \n"
-    } else {
-      return "| check  | text Contain | " + JSON.stringify(request.response, 0, 4) + "| true | \n"
-    }
-  } else {
-    return ""
-  }
-
-}
-function postFitnesse() {
-  
-}
 function getSelectOptions() {
   let options = HTTPSnippet.availableTargets()
   let out = []
+  out.push(`<option value='table'>table</option>`);
+  out.push(`<option value='python/simple'>python/simple</option>`);
   options.map(item => {
     item.clients.map(client => {
       out.push(` <option value="${item.key}/${client.key}">${item.key}/${client.key}</option>`)
     })
   })
+
   return out
 }
 
-function buildPythonScript(request) {
-  //return snippet.convert('python',"requestMini")
-  try {
-    let snippet = new HTTPSnippet(request)
-    return snippet.convert('python', "simple")
-  } catch (e) {
-    return e
-  }
-}
 
 function buildLangScript(request) {
   try {
     let snippet = new HTTPSnippet(request)
     return snippet.convert(PANEL_SESSION.currentLang, PANEL_SESSION.currentType)
   } catch (e) {
-    return e
+    console.error(e)
   }
 }
 
 
-/**
- *  use global function to save info.
- *  代替 devpanel.js来处理dom元素.
- */
-
-var type_list = ["..", "Fitnesse", "Python3", "Fit","Python3/request", "JavaScript", "node.js", "node.js/request"]
-
-function reformatToFitnesse() {
-  PANEL_SESSION.currentType = 1;
-  domApiType().innerHTML = type_list[PANEL_SESSION.currentType];
-  initSession()
+function setSelectType(type) {
+  domSelectFormatType().value = type
 }
 
-function reformatToFitnesseV2() {
-  PANEL_SESSION.currentType = 3;
-  domApiType().innerHTML = type_list[PANEL_SESSION.currentType];
+function reformatToTable() {
+  PANEL_SESSION.currentLang="table"
+  PANEL_SESSION.currentType=""
+  setSelectType("table");
   initSession()
 }
 
 function reformatToPython() {
-  PANEL_SESSION.currentType = 2;
-  domApiType().innerHTML = type_list[PANEL_SESSION.currentType];
+  PANEL_SESSION.currentLang="python"
+  PANEL_SESSION.currentType="simple"
+  setSelectType("python/simple");
   initSession()
 }
 
@@ -219,20 +159,18 @@ function reformatBySelect(v) {
       PANEL_SESSION.currentType = v.target.value.split("/")[1]
       PANEL_SESSION.currentLang = v.target.value.split("/")[0]
     } catch (e) {
-      return e
+      console.error(e)
     }
   }
   initSession()
 }
 
 function apiMatchChanged(v) {
-  domApiType().innerHTML = "apiMatchChanged init";
   if (v && v.target) {
     localStorage.filterWhiteList = v.target.value
     PANEL_SESSION.filterWhiteList[0] = v.target.value
     initSession()
   } else {
-    domApiType().innerHTML = "apiMatchChanged Error";
     console.error("not get v apiMatchChanged")
   }
 }
@@ -276,9 +214,7 @@ function initSession() {
   clearDom()
   let domList = PANEL_SESSION.requests.map(t => buildCodeDom(t));
   appendAllToContent(domList)
-
   domApiCount().innerHTML = PANEL_SESSION.requests.length;
-  domApiType().innerHTML = type_list[PANEL_SESSION.currentType];
 }
 
 /**
@@ -289,47 +225,42 @@ function buildCodeDom(obj) {
   if (isInBlackList(obj.url)) return
   if ((PANEL_SESSION.document != null) && isInWhiteList(obj.url)) {
     let outScriptText = null
-    if (PANEL_SESSION.currentType === 1) {
-      outScriptText = buildFitScript(obj)
-    } else if (PANEL_SESSION.currentType === 2) {
-      outScriptText = buildPythonScript(obj)
-    } else if(PANEL_SESSION.currentType===3){
-      outScriptText=buildFitScriptV2(obj)
-    }else{
+    if (PANEL_SESSION.currentLang === "table") {
+      outScriptText = buildFitTableScript(obj)
+    } else {
       outScriptText = buildLangScript(obj)
     }
-
     let pre = PANEL_SESSION.document.createElement("pre");
     let code = PANEL_SESSION.document.createElement("code");
 
-  
+
     code.className = "javascript";
     code.innerHTML = outScriptText;
     pre.append(code)
-    pre.obj=obj
+    pre.obj = obj
     return pre
   }
 }
 
 function buildButton(dom) {
   let syncButton = PANEL_SESSION.document.createElement("button");
-  syncButton.onclick=()=>{console.log("....")}
-  syncButton.innerText="+";
-  syncButton.className="sync-button";
+  syncButton.onclick = () => {
+    console.log("....")
+  }
+  syncButton.innerText = "+";
+  syncButton.className = "sync-button";
   return syncButton
 }
 
 function appendAllToContent(domList) {
-  // <pre><code>...</code>
   if (domList.length) {
-    domList.map(p =>{
+    domList.map(p => {
       domContent().append(buildButton(p))
       domContent().append(PANEL_SESSION.document.createElement("br"))
       domContent().append(p)
     })
   }
   domApiCount().innerHTML = PANEL_SESSION.requests.length;
-  domApiType().innerHTML = type_list[PANEL_SESSION.currentType];
 }
 
 /**
@@ -365,19 +296,41 @@ function fillBodyOrParam(req, expchar) {
     expchar = CHAR_EXP;
   if (req.method.toLocaleLowerCase() === "post") {
     if (req.postData && req.postData.text != null && req.postData.text.length > 60) {
-      return "| set Body| {{{ " + expchar + excp(JSON.stringify(JSON.parse(req.postData.text), 0, 4), expchar) + expchar + " }}}|" + expchar
+      return "| Body | {{{ " + expchar + excp(JSON.stringify(JSON.parse(req.postData.text), 0, 4), expchar) + expchar + " }}}|" + expchar
     } else if (req.postData) {
-      return "| set Body| " + excp(req.postData.text) + " |" + expchar
+      return "| Body | " + excp(req.postData.text) + " |" + expchar
     } else {
-      return "| set Body| {} |" + expchar
+      return "| Body| {} |" + expchar
     }
   } else if (req.method.toLocaleLowerCase() === "get") {
     let out = ""
     for (let item of req.queryString) {
-      out += "| set Param | " + item.name + " |   | " + item.value + "  |" + expchar
+      out += "| Param | " + item.name + " | " + item.value + " |" + expchar
     }
     return out
   }
+}
+
+
+function buildFitTableScript(request) {
+  var tpl = "";
+  tpl += "| " + request.method.toUpperCase() + " | " + spUrl(request) + "|\n"
+  tpl += fillBodyOrParamNotExt(request).replace("| set Body |", "| Body |")
+  tpl += buildFitScriptResponse(request).replace("| check  | text Contain |", "| check text |")
+  return tpl;
+}
+
+function buildFitScriptResponse(request) {
+  if (request.response) {
+    if (request.response.constructor == String) {
+      return "| check  | text Contain | " + request.response + "| true | \n"
+    } else {
+      return "| check  | text Contain | " + JSON.stringify(request.response, 0, 4) + "| true | \n"
+    }
+  } else {
+    return ""
+  }
+
 }
 
 function fillBodyOrParamNotExt(req) {
@@ -393,3 +346,7 @@ function excp(str, expchar) {
   else
     return str
 }
+
+
+window.panelOnShown = panelOnShown
+initWithChrome(chrome)
