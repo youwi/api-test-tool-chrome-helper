@@ -218,6 +218,13 @@ function initSession() {
 }
 
 /**
+ * 替换url
+ */
+function findBaseUrl(){
+  PANEL_SESSION.requests
+}
+
+/**
  * build text then append to root.
  * @param obj
  */
