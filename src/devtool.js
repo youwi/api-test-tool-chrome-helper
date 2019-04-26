@@ -76,7 +76,7 @@ function initWithChrome(browser) {
 }
 
 function panelOnShown(win) {
-  PANEL_SESSION.document = win.document
+  PANEL_SESSION.document = win.document;
   domFormatFitnesseV2().addEventListener('click', reformatToTable, false);
   domFormatPythonMini().addEventListener('click', reformatToPython, false);
   domClear().addEventListener('click', clearAll, false);
@@ -195,6 +195,15 @@ function isInWhiteList(url) {
   return out
 }
 
+/**
+ * 如果大于50个接口,就自动清理一半,防止内存过大.
+ */
+function limitSession() {
+  if(PANEL_SESSION.requests.length>50) {
+    PANEL_SESSION.requests.splice(0, 25)
+    initSession();
+  }
+}
 function clearSession() {
   PANEL_SESSION.requests = []
   initSession();
@@ -274,9 +283,11 @@ function appendAllToContent(domList) {
  * daynic append to Content
  */
 function appendToApiPanel(obj) {
+  limitSession();
+  PANEL_SESSION.requests.splice(-100);
   PANEL_SESSION.requests.push(obj);
   domApiCount().innerHTML = PANEL_SESSION.requests.length;
-  domContent().append(buildButton(obj))
+  domContent().append(buildButton(obj));
   domContent().append(PANEL_SESSION.document.createElement("br"))
   domContent().append(buildCodeDom(obj))
 }
