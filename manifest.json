@@ -1,38 +1,33 @@
 {
-  "manifest_version": 2,
-  "name": "API Test tool Record http to script",
-  "version": "0.0.5",
-  "version_name": "alpha",
-  "description": "http record tool.gen scripts. open devtool see API panel",
-  "devtools_page": "html/devtool.html",
-  "icons": {
-    "16": "images/favicon-200x200.png",
-    "48": "images/favicon-200x200.png",
-    "128": "images/favicon-200x200.png"
-  },
-  "browser_action": {
-    "default_icon": {
-      "20": "images/favicon-32x32.png",
-      "32": "images/favicon-32x32.png"
+    "manifest_version": 2,
+    "name": "API Test tool Record http to script",
+    "version": "0.0.9",
+    "version_name": "0.0.9",
+    "description": "http record tool.gen scripts. open devtool see API panel",
+    "devtools_page": "html/devtool.html",
+    "icons": {
+        "16": "images/favicon-200x200.png",
+        "48": "images/favicon-200x200.png",
+        "128": "images/favicon-200x200.png"
     },
-    "default_title": "ApiTest"
-  },
-
-  "author": "youcxx@gmail.com",
-  "homepage_url": "https://github.com/youwi/api-test-tool-chrome-helper",
-  "incognito": "spanning",
-  "minimum_chrome_version": "46",
-  "permissions": [
-    "tabs",
-    "http://*/*",
-    "https://*/*"
-  ],
-  "background": {
-    "scripts": [
-    ]
-  },
-
-
-  "short_name": "starter"
+    "browser_action": {
+        "default_icon": {
+            "20": "images/favicon-32x32.png",
+            "32": "images/favicon-32x32.png"
+        },
+        "default_title": "ApiTest"
+    },
+    "author": "youcxx@gmail.com",
+    "homepage_url": "https://github.com/youwi/api-test-tool-chrome-helper",
+    "incognito": "spanning",
+    "minimum_chrome_version": "46",
+    "permissions": [
+        "tabs",
+        "http://*/*",
+        "https://*/*"
+    ],
+    "background": {
+        "scripts": []
+    },
+    "short_name": "starter"
 }
-
