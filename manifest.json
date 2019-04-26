@@ -1,8 +1,8 @@
 {
     "manifest_version": 2,
     "name": "API Test tool Record http to script",
-    "version": "0.0.9",
-    "version_name": "0.0.9",
+    "version": "0.0.10",
+    "version_name": "0.0.10",
     "description": "http record tool.gen scripts. open devtool see API panel",
     "devtools_page": "html/devtool.html",
     "icons": {

@@ -284,7 +284,6 @@ function appendAllToContent(domList) {
  */
 function appendToApiPanel(obj) {
   limitSession();
-  PANEL_SESSION.requests.splice(-100);
   PANEL_SESSION.requests.push(obj);
   domApiCount().innerHTML = PANEL_SESSION.requests.length;
   domContent().append(buildButton(obj));
